@@ -103,7 +103,6 @@ public class MasterWindow extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> BoneList;
     private javax.swing.JScrollPane BonePit;
