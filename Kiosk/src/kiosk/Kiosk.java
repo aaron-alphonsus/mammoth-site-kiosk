@@ -29,8 +29,8 @@ public class Kiosk {
     
     private static void CreateAndShowGUI()
     {
-        MasterWindow window = new MasterWindow();
-        window.setVisible(true);
+        //MasterWindow window = new MasterWindow();
+        //window.setVisible(true);
     }
     
 }
