@@ -10,14 +10,23 @@ Class:  CSC468 GUI Programming
 Date:   Spring 2017
 */
 
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.*;
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.Point2D;
+import javax.swing.*;
+
 public class Walkway
 {
 	// Metadata
 	public double xMin, xMax, yMin, yMax;
-	public ArrayList<Point2D.Double> polylines;
+	public ArrayList<ArrayList<Point2D.Double>> polylines;
 
 	// Singleton stuff
-	private Walkway ww;
+	private static Walkway ww;
 
 	private Walkway()
 	{
@@ -27,7 +36,7 @@ public class Walkway
 	}
 
 	// This is essentially a copy of the Bone class's parseXML function
-	private parseXML()
+	private void parseXML()
 	{
 		// Get our root node
 		Element root = null;
@@ -91,7 +100,7 @@ public class Walkway
 	}
 
 	// Singleton classes only have 1 public method
-	public static getWalkwayInstance()
+	public static Walkway getWalkwayInstance()
 	{
 		// If the does not exist
 		if (ww == null)
