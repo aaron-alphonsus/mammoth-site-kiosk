@@ -57,17 +57,6 @@ public class Kiosk extends JFrame
             @Override public void componentMoved(ComponentEvent e) { if(!hasFocus()) requestFocus(); }
         });
         
-<<<<<<< Updated upstream
-        content.setLayout( layout );
-        CreateMainKioskScrollPane(content);      
-        CreateMainKioskBoneYardPanel(content);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        this.setContentPane(content);  
-        this.setResizable(false);
-        this.setFocusable(true);
-        this.setSize(950, 600);      //set Width, Height
-=======
         menuBar.add(new JMenu("File"));
         
         content.setLayout( layout );
@@ -81,8 +70,7 @@ public class Kiosk extends JFrame
         this.setContentPane(content);  
         this.setResizable(false);
         this.setFocusable(true);
-        this.setSize(1000, 700);      //set Width, Height
->>>>>>> Stashed changes
+        this.setSize(1600, 900);      //set Width, Height
         this.setVisible(true);
     }
     
