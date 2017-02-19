@@ -1,4 +1,8 @@
 
+### XML database files ###
+*.xml
+*.jpg
+
 # Created by https://www.gitignore.io/api/macos,linux,java,netbeans
 
 ### Java ###
