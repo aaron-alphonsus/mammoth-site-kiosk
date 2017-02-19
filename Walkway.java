@@ -91,7 +91,7 @@ public class Walkway
 	}
 
 	// Singleton classes only have 1 public method
-	public static getWalkway()
+	public static getWalkwayInstance()
 	{
 		// If the does not exist
 		if (ww == null)
