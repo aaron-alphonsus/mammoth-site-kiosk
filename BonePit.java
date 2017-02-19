@@ -2,8 +2,8 @@
 
 	**** BonePit.java ****
 
-This file will read the bonexml file and the walkway.xml file, plotting all
-referenced bones and paths from it.
+This file will read the bonexml file and return an array list of bone
+objects for other people to use as necessary.
 
 References: This file is a adapted from Dr. John Weiss' XMLplot2.java code
 
