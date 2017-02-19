@@ -32,8 +32,8 @@ public class Bone
 	// Drawing info
 	// private int nShapes;
 	// private int nVerticies;
-	private Double xMin, xMax, yMin, yMax;
-	private ArrayList<ArrayList<Point2D.Double>> polylines = new ArrayList<ArrayList<Point2D.Double>>();
+	public Double xMin, xMax, yMin, yMax;
+	public ArrayList<ArrayList<Point2D.Double>> polylines = new ArrayList<ArrayList<Point2D.Double>>();
 
 	// DONT USE THIS CONSTRUCTOR
 	public Bone() {
