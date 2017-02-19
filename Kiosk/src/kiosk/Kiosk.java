@@ -20,8 +20,9 @@ public class Kiosk extends JFrame
 {   
     //Private Class Members
     
+    private GraphicBoneYard _BoneYard;
     private int _SliderValue = 0;
-    private int _ZoomFactor = 0;
+    private int _ZoomFactor = 1;
     
     //End Private Class Members
     
@@ -32,7 +33,14 @@ public class Kiosk extends JFrame
     {
         super("Welcome to Mammoth Site");
         Container content = getContentPane();
-        GridBagLayout layout = new GridBagLayout( );
+        BorderLayout layout = new BorderLayout();
+        JPanel right = new JPanel();
+        JPanel bottom = new JPanel();
+        JMenuBar menuBar = new JMenuBar();
+        
+        right.setMaximumSize(new Dimension(0,0));
+        bottom.setMaximumSize(new Dimension(0,0));
+        
         this.addKeyListener( new KeyAdapter()
         {
             @Override public void keyPressed(KeyEvent e) { if(e.getKeyCode() == KeyEvent.VK_ESCAPE) System.exit(0); }
@@ -49,6 +57,7 @@ public class Kiosk extends JFrame
             @Override public void componentMoved(ComponentEvent e) { if(!hasFocus()) requestFocus(); }
         });
         
+<<<<<<< Updated upstream
         content.setLayout( layout );
         CreateMainKioskScrollPane(content);      
         CreateMainKioskBoneYardPanel(content);
@@ -58,6 +67,22 @@ public class Kiosk extends JFrame
         this.setResizable(false);
         this.setFocusable(true);
         this.setSize(950, 600);      //set Width, Height
+=======
+        menuBar.add(new JMenu("File"));
+        
+        content.setLayout( layout );
+        content.add(right, BorderLayout.EAST);
+        content.add(bottom, BorderLayout.SOUTH);
+        content.add(menuBar, BorderLayout.NORTH);
+        content.add(CreateMainKioskScrollPane(), BorderLayout.WEST);      
+        content.add(CreateMainKioskBoneYardPanel(), BorderLayout.CENTER);
+        
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setContentPane(content);  
+        this.setResizable(false);
+        this.setFocusable(true);
+        this.setSize(1000, 700);      //set Width, Height
+>>>>>>> Stashed changes
         this.setVisible(true);
     }
     
@@ -84,76 +109,71 @@ public class Kiosk extends JFrame
        Kiosk kiosk = new Kiosk();
     }
 
-    private void CreateMainKioskScrollPane(Container content)
+    private JPanel CreateMainKioskScrollPane()
     {      
+        JPanel scrollPanel = new JPanel();
+        JScrollPane pane = new JScrollPane();
+        
+        scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
         JLabel label = new JLabel("Inventory");
         label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.CENTER);
-        JScrollPane pane = new JScrollPane(label);   
            
         pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPanel.setPreferredSize(new Dimension(250, 600));
         
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.05;
-        c.weighty = 0.1;
-        c.gridx = 0;
-        c.gridy = 0;
-
-        content.add( pane, c );  
+        scrollPanel.add(label);
+        scrollPanel.add(pane);
+        
+        return scrollPanel;
     }
     
-    private void CreateMainKioskBoneYardPanel(Container content)
+    private JPanel CreateMainKioskBoneYardPanel()
     {
-        JPanel allContentPanel = new JPanel();
-        JPanel boneYardPanel = new JPanel();
-        JLabel label = new JLabel("This is the Bone Yard");
-        GridBagConstraints c = new GridBagConstraints();
+        JPanel top = new JPanel();
+        JPanel left = new JPanel();
+        JPanel right = new JPanel();
+        JPanel BoneYard = new JPanel();
+        _BoneYard = new GraphicBoneYard();
+        BorderLayout boneyardLayout = new BorderLayout();
+        JScrollPane scrollYard = new JScrollPane(_BoneYard);
         
-        allContentPanel.setLayout(new GridBagLayout());
+        scrollYard.setViewportView(_BoneYard);
+        scrollYard.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollYard.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         
-        label.setVerticalAlignment(JLabel.CENTER);
-        boneYardPanel.add(label);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weighty = .5;
-        c.fill = GridBagConstraints.BOTH;
-        allContentPanel.add(boneYardPanel, c);
+        top.setMaximumSize(new Dimension(0,0));
+        left.setMaximumSize(new Dimension(0,0));
+        right.setMaximumSize(new Dimension(0,0));
         
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
-        allContentPanel.add(CreateBottomOfScreenControls(), c);
+        BoneYard.setLayout(boneyardLayout);
+        BoneYard.add(top, BorderLayout.NORTH);
+        BoneYard.add(left, BorderLayout.WEST);
+        BoneYard.add(right, BorderLayout.EAST);
+        BoneYard.add(scrollYard, BorderLayout.CENTER);
+        BoneYard.add(CreateBottomOfScreenControls(), BorderLayout.SOUTH);
         
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridwidth = 4;
-        c.weightx = .1;
-        c.weighty = 1;
-        c.gridx = 1;
-        c.gridy = 0;
-        
-        content.add(allContentPanel, c);
+        return BoneYard;
     }
-    
+
     private JPanel CreateBottomOfScreenControls()
     {
         JPanel kioskControls = new JPanel();
-        kioskControls.setLayout(new GridBagLayout( ));
+        JToolBar toolBar = new JToolBar();
 
-        SetZoomControls(kioskControls);
-        SetSliderControl(kioskControls);
-
+        SetSliderControl(toolBar);
+        SetZoomControls(toolBar);
+        
+        kioskControls.add(toolBar);
+        
         return kioskControls;
     }
     
-    private void SetSliderControl(JPanel panel)
+    private void SetSliderControl(JToolBar toolBar)
     {
+        JPanel sliderPanel = new JPanel();
         JSlider slider = new JSlider();
-        GridBagConstraints c = new GridBagConstraints();
+        JLabel label = new JLabel( (" Value: " + (Integer)_SliderValue) );
         
         slider.addChangeListener((ChangeEvent e) -> 
         {
@@ -162,6 +182,7 @@ public class Kiosk extends JFrame
             if(!source.getValueIsAdjusting())
             {
                 _SliderValue = (int)source.getValue();
+                label.setText( (" Value: " + (Integer)_SliderValue) );
                 source.transferFocusBackward(); //set focus back to JFrame
             }
         });
@@ -176,49 +197,50 @@ public class Kiosk extends JFrame
         slider.setPaintLabels(true);
         slider.setSnapToTicks(true);
         
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 2;
-        c.gridwidth = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        sliderPanel.setLayout(new GridLayout(0, 2));
+        sliderPanel.add(slider);
+
+        sliderPanel.add(label);
         
-        panel.add(slider, c);
+        toolBar.add(sliderPanel);
     }
     
-    private void SetZoomControls(JPanel panel)
+    private void SetZoomControls(JToolBar toolBar)
     {
-        GridBagConstraints c = new GridBagConstraints();
         JButton zoomOut = new JButton ("-");
         JButton zoomIn = new JButton("+");
-        JLabel label = new JLabel( ((Integer)_ZoomFactor).toString() );
+        JLabel label = new JLabel(" Value: " + _ZoomFactor);
         JPanel zoomPanel = new JPanel();
         
-        zoomIn.addActionListener((ActionEvent e) -> 
+        ActionListener zoomListener = new ActionListener() 
         {
-            _ZoomFactor ++; 
-            label.setText( ((Integer)_ZoomFactor).toString() );
-            ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
-        });
-        zoomOut.addActionListener((ActionEvent e) ->  
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                if(e.getSource() == zoomIn) setZoomFactor(_ZoomFactor + 1);
+                else setZoomFactor(_ZoomFactor - 1);
+                label.setText((" Value: " + _ZoomFactor));
+                ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
+            }
+        };
+        zoomIn.addActionListener(zoomListener);
+        zoomOut.addActionListener(zoomListener);
+        
+        zoomPanel.setLayout(new GridLayout(0, 2));        
+        zoomPanel.add(zoomIn);
+        zoomPanel.add(label);
+        zoomPanel.add(zoomOut);
+        
+        toolBar.add(zoomPanel);
+    }
+    
+    private void setZoomFactor(int newValue)
+    {
+        if(newValue > 0)
         {
-            _ZoomFactor--; 
-            label.setText( ((Integer)_ZoomFactor).toString() );
-            ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
-        });
-        
-        zoomPanel.setLayout(new GridLayout(0, 1));
-        zoomPanel.setBorder(BorderFactory.createEmptyBorder(0, 90, 0, 20));
-        c.gridx = 4;
-        c.gridy = 0;
-        c.weighty = 1.1;
-        c.gridheight = 2;
-        c.fill = GridBagConstraints.VERTICAL;
-        
-        zoomPanel.add(zoomIn, 0);
-        zoomPanel.add(label, 1);
-        zoomPanel.add(zoomOut, 2);
-        
-        panel.add(zoomPanel, c);
+            _ZoomFactor = newValue;
+            _BoneYard.setScale(_ZoomFactor);
+        }
     }
     
     //End Private Class Methods
