@@ -20,7 +20,7 @@ public class Kiosk extends JFrame
 {   
     //Private Class Members
     
-    private GraphicBoneYard _BoneYard;
+    private GraphicBoneYard _BoneYard = null;
     private int _SliderValue = 0;
     private int _ZoomFactor = 1;
     
@@ -169,7 +169,7 @@ public class Kiosk extends JFrame
             JSlider source = (JSlider)e.getSource();
             if(!source.getValueIsAdjusting())
             {
-                _SliderValue = (int)source.getValue();
+                _SliderValue = source.getValue();
                 label.setText( (" Value: " + (Integer)_SliderValue) );
                 source.transferFocusBackward(); //set focus back to JFrame
             }

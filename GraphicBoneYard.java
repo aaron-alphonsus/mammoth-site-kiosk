@@ -16,8 +16,8 @@ import java.util.*;
  */
 public class GraphicBoneYard extends JPanel
 {
-    private Dimension _OriginalDimension;
-    private ArrayList<Bone> _Bones;
+    private Dimension _OriginalDimension = new Dimension(0,0);
+    private ArrayList<Bone> _Bones = new ArrayList<>();
     private boolean _FirstLoad = true;
     private double _Scale = 1;
     
@@ -64,8 +64,8 @@ public class GraphicBoneYard extends JPanel
         }
         
         Draw(graph);
-
         graph.dispose();
+        revalidate();
     }
     
     public void setScale(int scale)
@@ -85,7 +85,6 @@ public class GraphicBoneYard extends JPanel
         //for(Bone bone : _Bones)
         //{
         Bone bone = _Bones.get(0);
-        System.out.println(bone);
         
         	for (ArrayList<Point2D.Double> line : bone.polylines)
         	{
