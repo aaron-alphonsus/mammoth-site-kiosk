@@ -2,7 +2,7 @@
 
     **** ImageDisplay.java ****
 
-Display bone image as a JLabel.
+Display bone image and details in a JFrame
 Assumes bonexml folder is located in same directory.
 
 Author: John M. Weiss, Ph.D.
@@ -13,11 +13,12 @@ Date:   Spring 2017
 */
 
 import java.awt.event.*;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import javax.swing.*;
 import java.util.*;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.io.File;
 
 public class ImageDisplay extends JFrame
 {   
@@ -100,8 +101,12 @@ public class ImageDisplay extends JFrame
         // looks in cwd for bonexml folder. 
         SwingUtilities.invokeLater( new Runnable() {
             public void run() {
-                // If boneID.jpg not found, displays empty window.
-                new ImageDisplay("bonexml/" + bone.id + ".jpg", bone);
+                // If boneID.jpg not found, displays default.jpg
+                File boneImage = new File("bonexml/" + bone.id + ".jpg");
+                if (boneImage.exists())
+                    new ImageDisplay("bonexml/" + bone.id + ".jpg", bone);
+                else 
+                    new ImageDisplay("bonexml/default.jpg", bone);
             }
         });
     }
@@ -111,6 +116,6 @@ public class ImageDisplay extends JFrame
     // {   
         // // Creates bone list and displays first bone
         // ArrayList<Bone> bones = BonePit.readBones();
-		// DisplayBone(bones.get(0));
+		// DisplayBone(bones.get(4));
     // }
 }
