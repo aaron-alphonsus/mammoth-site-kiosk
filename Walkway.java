@@ -23,7 +23,7 @@ public class Walkway
 {
 	// Metadata
 	public double xMin, xMax, yMin, yMax;
-	public ArrayList<ArrayList<Point2D.Double>> polylines;
+	public ArrayList<ArrayList<Point2D.Double>> polylines = new ArrayList<ArrayList<Point2D.Double>>();
 
 	// Singleton stuff
 	private static Walkway ww;
@@ -33,6 +33,12 @@ public class Walkway
 		super();
 
 		this.parseXML();
+	}
+	
+	// toString so we can debug :)
+	public String toString() {
+		return "Walkway\n    xMin, xMax = (" + xMin + ", " + xMax + ")\n    yMin, yMax = (" + yMin + ", " + yMax + ")\n";
+
 	}
 
 	// This is essentially a copy of the Bone class's parseXML function

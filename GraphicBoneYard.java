@@ -79,22 +79,41 @@ public class GraphicBoneYard extends JPanel
     
     private void Draw(Graphics2D graph)
     {
-        double xScale = _OriginalDimension.getWidth();
-        double yScale = _OriginalDimension.getHeight();
+        double xMin = 0;
+        double yMin = 0;
         
+        Walkway ww = Walkway.getWalkwayInstance();
+        xMin = ww.xMin - 5;
+        double xDel = ww.xMax + 5 - xMin;
+        yMin = ww.yMin - 5;
+        double yDel = ww.yMax + 5 - yMin;
+        
+        double xScale = _OriginalDimension.getWidth() / (xDel);
+        double yScale = _OriginalDimension.getHeight() / (yDel);
+        
+        for(ArrayList<Point2D.Double> line : ww.polylines)
+        {
+        	for(int i = 0; i < line.size() - 1; i++)
+		{
+			Point2D.Double p1 = line.get(i);
+			Point2D.Double p2 = line.get(i+1);
+			graph.drawLine((int) ((p1.getX() - xMin) *xScale), (int)((p1.getY()- yMin)*yScale), (int)((p2.getX() - xMin)*xScale), (int)((p2.getY() - yMin)*yScale));
+		}
+        }
+         
         //for(Bone bone : _Bones)
         //{
-        Bone bone = _Bones.get(0);
-        
-        	for (ArrayList<Point2D.Double> line : bone.polylines)
-        	{
-			for(int i = 0; i < line.size() - 1; i++)
-			{
-				Point2D.Double p1 = line.get(i);
-				Point2D.Double p2 = line.get(i+1);
-				graph.drawLine((int) ((p1.getX() - bone.xMin) *xScale), (int)((p1.getY()- bone.yMin)*yScale), (int)((p2.getX() - bone.xMin)*xScale), (int)((p2.getY() - bone.yMin)*yScale));
-			}
-        	}
+        // Bone bone = _Bones.get(0);
+        //
+        //	for (ArrayList<Point2D.Double> line : bone.polylines)
+        //	{
+	//		for(int i = 0; i < line.size() - 1; i++)
+	//		{
+	//			Point2D.Double p1 = line.get(i);
+	//			Point2D.Double p2 = line.get(i+1);
+	//			graph.drawLine((int) ((p1.getX() - xMin) *xScale), (int)((p1.getY()- yMin)*yScale), (int)((p2.getX() - xMin)*xScale), (int)((p2.getY() - yMin)*yScale));
+	//		}
+        //	}
 	//}
     }
     
