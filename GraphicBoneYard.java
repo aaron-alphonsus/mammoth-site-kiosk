@@ -17,6 +17,7 @@ import java.util.*;
 public class GraphicBoneYard extends JPanel
 {
     private Dimension _OriginalDimension = new Dimension(0,0);
+    private Dimension _CurrentDimension = new Dimension(0,0);
     private ArrayList<Bone> _Bones = new ArrayList<>();
     private boolean _FirstLoad = true;
     private double _Scale = 1;
@@ -31,17 +32,7 @@ public class GraphicBoneYard extends JPanel
     @Override
     public Dimension getPreferredSize()
     {
-        double d = 1 + (_Scale/10);
-        if(_OriginalDimension != null)
-        {
-            int w = (int) (_OriginalDimension.getWidth() * d);
-            int h = (int) (_OriginalDimension.getHeight() * d);
-            return new Dimension(w, h);
-        }
-        else
-        {
-            return new Dimension(0,0);
-        }
+    	return _CurrentDimension;
     }
     
     @Override
@@ -51,6 +42,7 @@ public class GraphicBoneYard extends JPanel
         if(_FirstLoad)
         {
             _OriginalDimension = this.getSize();
+            _CurrentDimension = this.getSize();
             _FirstLoad = false;
         }
         
@@ -59,8 +51,8 @@ public class GraphicBoneYard extends JPanel
 
         if(_Scale > 1)
         {
-            at.scale(1 + (_Scale/10), 1 + (_Scale/10));
-            graph.setTransform(at);
+            //at.scale(1 + (_Scale/10), 1 + (_Scale/10));
+            //graph.setTransform(at);
         }
         
         Draw(graph);
@@ -79,17 +71,19 @@ public class GraphicBoneYard extends JPanel
     
     private void Draw(Graphics2D graph)
     {
-        double xMin = 0;
-        double yMin = 0;
+    	// JViewport port = (JViewport)this.getParent();
+        double topMargin = 5;
+        double botMargin = 5;
+        double leftMargin = 5;
+        double rightMargin = 5;
         
         Walkway ww = Walkway.getWalkwayInstance();
-        xMin = ww.xMin - 5;
-        double xDel = ww.xMax + 5 - xMin;
-        yMin = ww.yMin - 5;
-        double yDel = ww.yMax + 5 - yMin;
+        double xDel = (ww.xMax + rightMargin) - (ww.xMin - leftMargin);
+        double yDel = (ww.yMax + botMargin)- (ww.yMin - topMargin);
         
-        double xScale = _OriginalDimension.getWidth() / (xDel);
-        double yScale = _OriginalDimension.getHeight() / (yDel);
+        double xScale = _CurrentDimension.getWidth() / (xDel);
+        double yScale = _CurrentDimension.getHeight() / (yDel);
+        
         
         for(ArrayList<Point2D.Double> line : ww.polylines)
         {
@@ -97,34 +91,33 @@ public class GraphicBoneYard extends JPanel
 		{
 			Point2D.Double p1 = line.get(i);
 			Point2D.Double p2 = line.get(i+1);
-			graph.drawLine((int) ((p1.getX() - xMin) *xScale), (int)((p1.getY()- yMin)*yScale), (int)((p2.getX() - xMin)*xScale), (int)((p2.getY() - yMin)*yScale));
+			graph.drawLine((int) ((p1.getX() - ww.xMin) *xScale), (int)((p1.getY()- ww.yMin)*yScale), (int)((p2.getX() - ww.xMin)*xScale), (int)((p2.getY() - ww.yMin)*yScale));
 		}
         }
          
-        //for(Bone bone : _Bones)
-        //{
-        // Bone bone = _Bones.get(0);
-        //
-        //	for (ArrayList<Point2D.Double> line : bone.polylines)
-        //	{
-	//		for(int i = 0; i < line.size() - 1; i++)
-	//		{
-	//			Point2D.Double p1 = line.get(i);
-	//			Point2D.Double p2 = line.get(i+1);
-	//			graph.drawLine((int) ((p1.getX() - xMin) *xScale), (int)((p1.getY()- yMin)*yScale), (int)((p2.getX() - xMin)*xScale), (int)((p2.getY() - yMin)*yScale));
-	//		}
-        //	}
-	//}
+        for(Bone bone : _Bones)
+        {
+        	for (ArrayList<Point2D.Double> line : bone.polylines)
+        	{
+			for(int i = 0; i < line.size() - 1; i++)
+			{
+				Point2D.Double p1 = line.get(i);
+				Point2D.Double p2 = line.get(i+1);
+				graph.drawLine((int) ((p1.getX() - ww.xMin) *xScale), (int)((p1.getY()- ww.yMin)*yScale), (int)((p2.getX() - ww.xMin)*xScale), (int)((p2.getY() - ww.yMin)*yScale));
+			}
+        	}
+	}
     }
     
     private void UpdatePreferredSize() 
     {
-        double d = 1 + (_Scale/10);
+        double d = 1 + (_Scale/2);
 
         int w = (int) (_OriginalDimension.getWidth() * d);
         int h = (int) (_OriginalDimension.getHeight() * d);
-    
-        this.setPreferredSize(new Dimension(w, h));
+    	
+    	_CurrentDimension.setSize(w, h);
+        this.setPreferredSize(_CurrentDimension);
         getParent().doLayout();
         revalidate();
         repaint();

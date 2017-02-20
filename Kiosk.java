@@ -130,6 +130,8 @@ public class Kiosk extends JFrame
         scrollYard.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollYard.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         
+        
+        
         top.setMaximumSize(new Dimension(0,0));
         left.setMaximumSize(new Dimension(0,0));
         right.setMaximumSize(new Dimension(0,0));
