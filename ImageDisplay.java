@@ -35,17 +35,19 @@ public class ImageDisplay extends JFrame
             }
         });
         
+        // Creates arrays with bone details and labels for bone details.
+        String[] labels = {"Bone Object", "Year", "Taxon", "Object Number",
+            "Completeness", "Elevation"};
+        String[] properties = CreatePropertiesArray(bone);
+        
         // Creates the 'details' panel which has following fields:
         // id, year, taxon, objectNum, completeness, elevation
         JPanel details = new JPanel();
         details.setLayout( new BoxLayout(details, BoxLayout.Y_AXIS));
         getContentPane().add(details, BorderLayout.PAGE_START );
-        AddComponent(details, "Bone Object", bone.id);
-        AddComponent(details, "Year", String.valueOf(bone.year));
-        AddComponent(details, "Taxon", bone.taxon);
-        AddComponent(details, "Object Number", String.valueOf(bone.objectNum));
-        AddComponent(details, "Completeness", bone.completeness);
-        AddComponent(details, "Elevation", String.valueOf(bone.elevation));
+        for (int i = 0; i < labels.length; i++)
+            AddComponent(details, labels[i], properties[i]);
+        
         
         // add JLabel with image to the content pane
         JLabel image = new JLabel(new ImageIcon(boneImage));
@@ -56,7 +58,11 @@ public class ImageDisplay extends JFrame
         remarks.setLayout(new BoxLayout(remarks, BoxLayout.X_AXIS));
         getContentPane().add(remarks, BorderLayout.PAGE_END);
         remarks.add(new JLabel("Remarks: "));
-        AddTextArea(remarks, bone.remarks);
+        if(String.valueOf(bone.remarks) != null && 
+            !String.valueOf(bone.remarks).isEmpty())
+            AddTextArea(remarks, bone.remarks);
+        else
+            AddTextArea(remarks, "N/A");
         remarks.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         pack();
@@ -64,6 +70,37 @@ public class ImageDisplay extends JFrame
         // make window visible, and exit app when all windows closed
         setVisible( true );
         setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+    }
+    
+    public String[] CreatePropertiesArray(Bone bone)
+    {
+        String[] properties = {"N/A", "N/A", "N/A", "N/A", "N/A", "N/A"};
+        
+        // boneID has been tested earlier
+        properties[0] = bone.id;
+        
+        // Checks if any property is empty so that N/A can be displayed 
+        // instead of empty string.
+        
+        if (String.valueOf(bone.year) != null && 
+            !String.valueOf(bone.year).isEmpty())
+            properties[1] = String.valueOf(bone.year);
+            
+        if (bone.taxon != null && !bone.taxon.isEmpty())
+            properties[2] = bone.taxon;
+            
+        if (String.valueOf(bone.objectNum) != null && 
+            !String.valueOf(bone.objectNum).isEmpty())
+            properties[3] = String.valueOf(bone.objectNum);
+            
+        if (bone.completeness != null && !bone.completeness.isEmpty())
+            properties[4] = bone.completeness;
+            
+        if (String.valueOf(bone.elevation) != null && 
+            !String.valueOf(bone.elevation).isEmpty())
+            properties[5] = String.valueOf(bone.elevation);
+
+        return properties;
     }
     
     public void AddComponent (JPanel container, String label, String property)
