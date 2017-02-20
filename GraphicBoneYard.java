@@ -20,10 +20,15 @@ public class GraphicBoneYard extends JPanel
 	private Dimension _OriginalDimension = new Dimension(0,0);
 	private Dimension _CurrentDimension = new Dimension(0,0);
 	private ArrayList<Bone> _Bones = new ArrayList<>();
+	private Point2D.Double _WalkwayMin = null;
 	private Point _MousePosition = null;
 	private boolean _FirstLoad = true;
-	private double _Scale = 1;
 	private int sliderValue = 10;
+	private double _DeltaX = 0;
+	private double _DeltaY = 0;
+	private double _XScale = 0;
+	private double _YScale = 0;
+	private double _Scale = 1;
 
 	public GraphicBoneYard() {
 		super();
@@ -36,7 +41,7 @@ public class GraphicBoneYard extends JPanel
 
 			@Override public void mouseReleased(MouseEvent e) { _MousePosition = null; }
 			
-			@Override public void mouseClicked(MouseEvent e) { FindClosestBone( new Point2D.Double(e.getX(), e.getY()) ); }
+			@Override public void mouseClicked(MouseEvent e) { ((GraphicBoneYard)e.getSource()).FindClosestBone( new Point2D.Double(e.getX(), e.getY()) ); }
 		});
 
 		this.addMouseMotionListener(new MouseMotionAdapter()
@@ -49,8 +54,8 @@ public class GraphicBoneYard extends JPanel
 				JViewport port = (JViewport)((JPanel)e.getSource()).getParent();
 				Rectangle visible = port.getViewRect();
 
-				visible.x -= x / (_Scale * 1);
-				visible.y -= y / (_Scale * 1);
+				visible.x -= x / (_Scale);
+				visible.y -= y / (_Scale);
 
 				scrollRectToVisible(visible);
 			}
@@ -101,12 +106,11 @@ public class GraphicBoneYard extends JPanel
 		double rightMargin = 5;
 
 		Walkway ww = Walkway.getWalkwayInstance();
-		double xDel = (ww.xMax + rightMargin) - (ww.xMin - leftMargin);
-		double yDel = (ww.yMax + botMargin)- (ww.yMin - topMargin);
-
-		double xScale = _CurrentDimension.getWidth() / (xDel);
-		double yScale = _CurrentDimension.getHeight() / (yDel);
-
+		_WalkwayMin = new Point2D.Double(ww.xMin, ww.yMin);
+        _DeltaX = (ww.xMax + rightMargin) - (ww.xMin - leftMargin);
+        _DeltaY = (ww.yMax + botMargin)- (ww.yMin - topMargin);
+		_XScale = _CurrentDimension.getWidth() / (_DeltaX);
+		_YScale = _CurrentDimension.getHeight() / (_DeltaY);
 
 		for(ArrayList<Point2D.Double> line : ww.polylines)
 		{
@@ -114,7 +118,7 @@ public class GraphicBoneYard extends JPanel
 			{
 				Point2D.Double p1 = line.get(i);
 				Point2D.Double p2 = line.get(i+1);
-				graph.drawLine((int) ((p1.getX() - ww.xMin) *xScale), (int)((p1.getY()- ww.yMin)*yScale), (int)((p2.getX() - ww.xMin)*xScale), (int)((p2.getY() - ww.yMin)*yScale));
+				graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((p1.getY()- ww.yMin)* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((p2.getY() - ww.yMin)* _YScale));
 			}
 		}
 
@@ -126,7 +130,7 @@ public class GraphicBoneYard extends JPanel
 				{
 					Point2D.Double p1 = line.get(i);
 					Point2D.Double p2 = line.get(i+1);
-					graph.drawLine((int) ((p1.getX() - ww.xMin) *xScale), (int)((p1.getY()- ww.yMin)*yScale), (int)((p2.getX() - ww.xMin)*xScale), (int)((p2.getY() - ww.yMin)*yScale));
+					graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((p1.getY()- ww.yMin)* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((p2.getY() - ww.yMin)* _YScale));
 				}
 			}
 		}
@@ -158,31 +162,37 @@ public class GraphicBoneYard extends JPanel
     private void FindClosestBone(Point2D.Double p)
     {
     	boolean closer = false;
-    	Bone closestBone = null;
-    	Point2D.Double boneCenter = null;
-	    Point2D.Double closestCenter = null;
-	
+    	Bone closestBone = new Bone();
+    	Point2D.Double boneCenter = new Point2D.Double(0,0);
+	    Point2D.Double closestCenter = new Point2D.Double(0,0);
+	    
     	for(Bone bone : _Bones)
     	{
-    	    	boneCenter = new Point2D.Double(bone.xMax/2.0, bone.yMax/2.0);
+            if(bone.xMin != null && bone.xMax != null && bone.yMin != null && bone.yMax != null)
+            {
+    	        if(p.getX() <= (bone.xMax - _WalkwayMin.getX()) * _XScale && p.getX() >= (bone.xMin - _WalkwayMin.getX()) * _XScale &&
+    	            p.getY() <= (bone.yMax - _WalkwayMin.getY()) * _YScale && p.getY() >= (bone.yMin - _WalkwayMin.getY()) * _YScale)
+    	        {
+    	            boneCenter = new Point2D.Double(bone.xMax/2.0, bone.yMax/2.0);
     	    	
-    		if(closestBone == null) closer = true;
-    		else if( DistanceFormula(p, boneCenter) < DistanceFormula(p, closestCenter) ) closer = true;    		
+    	    	    if(closestBone == null) closer = true;
+    	    	    else if( DistanceFormula(p, boneCenter) < DistanceFormula(p, closestCenter) ) closer = true;    		
     		
-    		if(closer)
-    		{
-    			closer = false;
-    			closestBone = bone;
-    			closestCenter = new Point2D.Double(closestBone.xMax/2.0, closestBone.yMax/2.0);
-    		}
+    		        if(closer)
+    		        {
+    		    	    closer = false;
+    		    	    closestBone = bone;
+    		    	    closestCenter = new Point2D.Double(closestBone.xMax/2.0, closestBone.yMax/2.0);
+    		        }
+    		    }
+            }
     	}
-    	
-    	System.out.println(closestBone);
+        System.out.println(closestBone);    	
     }
     
     private double DistanceFormula(Point2D.Double a, Point2D.Double b)
     {
     	double distance = (a.getX() - b.getX()) * (a.getX() - b.getX());
-	return distance += (a.getY() - b.getY()) * (a.getY() - b.getY());
+	    return distance += (a.getY() - b.getY()) * (a.getY() - b.getY());
     }
 }
