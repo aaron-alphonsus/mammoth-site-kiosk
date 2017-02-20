@@ -23,15 +23,27 @@ import javax.swing.*;
 
 public class BonePit
 {
-	private ArrayList<Bone> bones;
-	private static int npoints = 0;
-	private static double xMin, yMin, xMax, yMax;
-	private static ArrayList<ArrayList<Point2D.Double>> polylines = new ArrayList<ArrayList<Point2D.Double>>();
+	private static ArrayList<Bone> bones = null;
+	private static double minElevation;
 
-	static ArrayList<Bone> readBones( )
+	public static double getMinElevation( ) {
+		if (bones == null) {
+			readBones();
+		}
+
+		return minElevation;
+	}
+
+	public static ArrayList<Bone> readBones( )
 	{
+		// PseudoSingleton
+		// If bones exists, just return it
+		if (bones != null) {
+			return bones;
+		}
+
 		// Variables
-		ArrayList<Bone> bones = new ArrayList<>();
+		bones = new ArrayList<>();
 		NodeList bonerecs = null;
 
 		// Walk through the XML file, if it's a bonerec then we will add its
@@ -59,6 +71,7 @@ public class BonePit
 			NodeList children = bonerec.getChildNodes();
 			String id = "", taxon = "", completeness = "", remarks = "";
 			int year = 0, objectNum = 0;
+			double elevation = 0.0;
 
 			// For some reason, it reads "null" nodes in between each actual
 			// node.  This ensures we don't crash
@@ -93,6 +106,13 @@ public class BonePit
 				else if (child.getNodeName().equals("remarks")) {
 					remarks = child.getTextContent().trim();
 				}
+				else if (child.getNodeName().equals("elevation")) {
+					Scanner sc = new Scanner( child.getTextContent().trim() );
+					elevation = sc.nextDouble();
+					if (elevation < minElevation) {
+						minElevation = elevation;
+					}
+				}
 			}
 
 			// Debug output
@@ -103,7 +123,7 @@ public class BonePit
 			// try { System.in.read(); } catch (Exception e) { }
 
 			// Build a Bone Object and add it to our array
-			bones.add(new Bone(id, year, taxon, objectNum, completeness, remarks));
+			bones.add(new Bone(id, year, taxon, objectNum, completeness, remarks, elevation));
 		}
 
 		// Return our list of bones
@@ -113,5 +133,9 @@ public class BonePit
 	// main function
 	public static void main( String[] args ) {
 		ArrayList<Bone> bones = BonePit.readBones();
+
+		// for (Bone bone : bones) {
+		// 	System.out.println(bone);
+		// }
 	}
 }

@@ -28,7 +28,8 @@ public class Bone
 	private int objectNum;
 	private String completeness;
 	private String remarks;
-	
+	private double elevation;
+
 	// Drawing info
 	// private int nShapes;
 	// private int nVerticies;
@@ -41,7 +42,7 @@ public class Bone
 	}
 
 	// USE THIS CONSTRUCTOR
-	public Bone(String id, int year, String taxon, int objectNum, String completeness, String remarks) {
+	public Bone(String id, int year, String taxon, int objectNum, String completeness, String remarks, double elevation) {
 
 		// Put in all the stuff given to us
 		this.id = id;
@@ -50,6 +51,7 @@ public class Bone
 		this.objectNum = objectNum;
 		this.completeness = completeness;
 		this.remarks = remarks;
+		this.elevation = elevation;
 
 		// Parse the bone-specific xml file
 		this.parseXML();
@@ -60,7 +62,7 @@ public class Bone
 
 	// toString method for debug output
 	public String toString() {
-		return "Bone Object " + id + "\n         year = " + year + "\n        taxon = " + taxon + "\n    objectNum = " + objectNum + "\n completeness = " + completeness + "\n      remarks = " + remarks + "\n   xMin, xMax = (" + xMin + ", " + xMax + ")\n   yMin, yMax = (" + yMin + ", " + yMax + ")\n";
+		return "Bone Object " + id + "\n         year = " + year + "\n        taxon = " + taxon + "\n    objectNum = " + objectNum + "\n completeness = " + completeness + "\n      remarks = " + remarks + "\n    elevation = " + elevation + "\n   xMin, yMin = (" + xMin + ", " + yMin + ")\n   xMax, yMax = (" + xMax + ", " + yMax + ")\n";
 
 	}
 
@@ -105,10 +107,10 @@ public class Bone
 			Node current = polys.item(i);
 			ArrayList<Point2D.Double> temp = new ArrayList<Point2D.Double>();
 			NodeList xyPairs = current.getChildNodes();
-			
+
 			for (int j = 0; j < xyPairs.getLength(); j++) {
 				Node pair = xyPairs.item(j);
-				
+
 				if(pair.getNodeName().equals("xy")) {
 					Scanner sc = new Scanner( pair.getTextContent().trim() );
 					double x = sc.nextDouble();
