@@ -70,14 +70,17 @@ public class GraphicBoneYard extends JPanel
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent( g );
+		AffineTransform at = new AffineTransform();
 		if(_FirstLoad)
         {
             _OriginalDimension = this.getSize();
             _CurrentDimension = this.getSize();
             _FirstLoad = false;
         }
-                
+               
         Graphics2D graph = (Graphics2D)g;
+        //at.rotate(Math.PI);
+        //graph.setTransform(at);
         
         Draw(graph);
         graph.dispose();
@@ -86,11 +89,17 @@ public class GraphicBoneYard extends JPanel
 
 	// Setters
 	public void setScale(int scale) {
-		if(scale != _Scale && scale > 0)
-		{
-			_Scale = scale;
-			UpdatePreferredSize();
-		}
+	
+	    if(scale > 0 && scale < _Scale)
+	    {
+	        _Scale = scale;
+	        UpdatePreferredSize(-1);
+	    }
+	    else if (scale > 0 && scale > _Scale)
+	    {
+	        _Scale = scale;
+	        UpdatePreferredSize(1);
+	    }
 	}
 
 	public void setSliderValue(int val) {
@@ -99,18 +108,17 @@ public class GraphicBoneYard extends JPanel
 	}
 
 	private void Draw(Graphics2D graph) {
-		// JViewport port = (JViewport)this.getParent();
 		double topMargin = 5;
 		double botMargin = 5;
 		double leftMargin = 5;
 		double rightMargin = 5;
-
 		Walkway ww = Walkway.getWalkwayInstance();
 		_WalkwayMin = new Point2D.Double(ww.xMin, ww.yMin);
         _DeltaX = (ww.xMax + rightMargin) - (ww.xMin - leftMargin);
         _DeltaY = (ww.yMax + botMargin)- (ww.yMin - topMargin);
 		_XScale = _CurrentDimension.getWidth() / (_DeltaX);
 		_YScale = _CurrentDimension.getHeight() / (_DeltaY);
+        double yMax = ww.yMax;
 
 		for(ArrayList<Point2D.Double> line : ww.polylines)
 		{
@@ -118,7 +126,7 @@ public class GraphicBoneYard extends JPanel
 			{
 				Point2D.Double p1 = line.get(i);
 				Point2D.Double p2 = line.get(i+1);
-				graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((p1.getY()- ww.yMin)* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((p2.getY() - ww.yMin)* _YScale));
+				graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((yMax - p1.getY())* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((yMax - p2.getY())* _YScale));
 			}
 		}
 
@@ -130,20 +138,37 @@ public class GraphicBoneYard extends JPanel
 				{
 					Point2D.Double p1 = line.get(i);
 					Point2D.Double p2 = line.get(i+1);
-					graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((p1.getY()- ww.yMin)* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((p2.getY() - ww.yMin)* _YScale));
+					graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((yMax - p1.getY())* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((yMax - p2.getY())* _YScale));
 				}
 			}
 		}
 	}
 
-	private void UpdatePreferredSize() {
-		double d = 1 + (_Scale);
-
-		int w = (int) (_OriginalDimension.getWidth() * d);
-		int h = (int) (_OriginalDimension.getHeight() * d);
+	private void UpdatePreferredSize(int resize) {
+        Point2D.Double oldCenter = new Point2D.Double(_CurrentDimension.getWidth()/2, _CurrentDimension.getHeight()/2);
+		int w = (int) (_OriginalDimension.getWidth() * _Scale);
+		int h = (int) (_OriginalDimension.getHeight() * _Scale);
 
 		_CurrentDimension.setSize(w, h);
 		this.setPreferredSize(_CurrentDimension);
+		
+        Point2D.Double scaledCenter = new Point2D.Double(_CurrentDimension.getWidth()/2, _CurrentDimension.getHeight()/2);
+		Point viewCenter = getViewPortCenter();
+		JViewport port = (JViewport)this.getParent();
+		Rectangle visible = port.getViewRect();
+		
+		if(resize > 0)
+		{
+		    visible.x = (int)viewCenter.getX() + (int)(scaledCenter.getX() / oldCenter.getX()) * (int)_Scale;
+		    visible.y = (int)viewCenter.getY() + (int)(scaledCenter.getY() / oldCenter.getY()) * (int)_Scale;
+	    }
+	    else
+	    {
+	        visible.x = (int)scaledCenter.getX();
+		    visible.y = (int)scaledCenter.getX();
+	    }	
+
+        scrollRectToVisible(visible);
 		getParent().doLayout();
 		revalidate();
 		repaint();
