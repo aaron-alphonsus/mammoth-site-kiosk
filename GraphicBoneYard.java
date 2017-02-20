@@ -35,6 +35,8 @@ public class GraphicBoneYard extends JPanel
 			@Override public void mousePressed(MouseEvent e) { _MousePosition = new Point(e.getX(), e.getY()); }
 
 			@Override public void mouseReleased(MouseEvent e) { _MousePosition = null; }
+			
+			@Override public void mouseClicked(MouseEvent e) { FindClosestBone( new Point2D.Double(e.getX(), e.getY()) ); }
 		});
 
 		this.addMouseMotionListener(new MouseMotionAdapter()
@@ -64,18 +66,18 @@ public class GraphicBoneYard extends JPanel
 	public void paintComponent(Graphics g) {
 		super.paintComponent( g );
 		if(_FirstLoad)
-		{
-			_OriginalDimension = this.getSize();
-			_CurrentDimension = this.getSize();
-			_FirstLoad = false;
-		}
-
-		Graphics2D graph = (Graphics2D)g;
-
-		Draw(graph);
-		graph.dispose();
-		revalidate();
-	}
+        {
+            _OriginalDimension = this.getSize();
+            _CurrentDimension = this.getSize();
+            _FirstLoad = false;
+        }
+                
+        Graphics2D graph = (Graphics2D)g;
+        
+        Draw(graph);
+        graph.dispose();
+        revalidate();
+    }
 
 	// Setters
 	public void setScale(int scale) {
@@ -152,4 +154,35 @@ public class GraphicBoneYard extends JPanel
 
 		return center;
 	}
+    
+    private void FindClosestBone(Point2D.Double p)
+    {
+    	boolean closer = false;
+    	Bone closestBone = null;
+    	Point2D.Double boneCenter = null;
+	    Point2D.Double closestCenter = null;
+	
+    	for(Bone bone : _Bones)
+    	{
+    	    	boneCenter = new Point2D.Double(bone.xMax/2.0, bone.yMax/2.0);
+    	    	
+    		if(closestBone == null) closer = true;
+    		else if( DistanceFormula(p, boneCenter) < DistanceFormula(p, closestCenter) ) closer = true;    		
+    		
+    		if(closer)
+    		{
+    			closer = false;
+    			closestBone = bone;
+    			closestCenter = new Point2D.Double(closestBone.xMax/2.0, closestBone.yMax/2.0);
+    		}
+    	}
+    	
+    	System.out.println(closestBone);
+    }
+    
+    private double DistanceFormula(Point2D.Double a, Point2D.Double b)
+    {
+    	double distance = (a.getX() - b.getX()) * (a.getX() - b.getX());
+	return distance += (a.getY() - b.getY()) * (a.getY() - b.getY());
+    }
 }
