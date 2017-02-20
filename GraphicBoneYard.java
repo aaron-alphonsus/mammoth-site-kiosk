@@ -21,6 +21,7 @@ public class GraphicBoneYard extends JPanel
 	private Dimension _CurrentDimension = new Dimension(0,0);
 	private ArrayList<Bone> _Bones = new ArrayList<>();
 	private Point2D.Double _WalkwayMin = null;
+	private Point2D.Double _WalkwayMax = null;
 	private Point _MousePosition = null;
 	private boolean _FirstLoad = true;
 	private int sliderValue = 10;
@@ -70,7 +71,7 @@ public class GraphicBoneYard extends JPanel
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent( g );
-		AffineTransform at = new AffineTransform();
+
 		if(_FirstLoad)
         {
             _OriginalDimension = this.getSize();
@@ -79,9 +80,6 @@ public class GraphicBoneYard extends JPanel
         }
                
         Graphics2D graph = (Graphics2D)g;
-        //at.rotate(Math.PI);
-        //graph.setTransform(at);
-        
         Draw(graph);
         graph.dispose();
         revalidate();
@@ -114,6 +112,7 @@ public class GraphicBoneYard extends JPanel
 		double rightMargin = 5;
 		Walkway ww = Walkway.getWalkwayInstance();
 		_WalkwayMin = new Point2D.Double(ww.xMin, ww.yMin);
+		_WalkwayMax = new Point2D.Double(ww.xMax, ww.yMax);
         _DeltaX = (ww.xMax + rightMargin) - (ww.xMin - leftMargin);
         _DeltaY = (ww.yMax + botMargin)- (ww.yMin - topMargin);
 		_XScale = _CurrentDimension.getWidth() / (_DeltaX);
@@ -146,15 +145,12 @@ public class GraphicBoneYard extends JPanel
 
 	private void UpdatePreferredSize(int resize) {
         Point2D.Double oldCenter = new Point2D.Double(_CurrentDimension.getWidth()/2, _CurrentDimension.getHeight()/2);
-		int w = (int) (_OriginalDimension.getWidth() * _Scale);
-		int h = (int) (_OriginalDimension.getHeight() * _Scale);
-
-		_CurrentDimension.setSize(w, h);
-		this.setPreferredSize(_CurrentDimension);
-		
+        
+		_CurrentDimension.setSize((int)(_OriginalDimension.getWidth() * _Scale), (int)(_OriginalDimension.getHeight() * _Scale));
         Point2D.Double scaledCenter = new Point2D.Double(_CurrentDimension.getWidth()/2, _CurrentDimension.getHeight()/2);
-		Point viewCenter = getViewPortCenter();
 		JViewport port = (JViewport)this.getParent();
+		this.setPreferredSize(_CurrentDimension);
+		Point viewCenter = getViewPortCenter();
 		Rectangle visible = port.getViewRect();
 		
 		if(resize > 0)
@@ -187,6 +183,7 @@ public class GraphicBoneYard extends JPanel
     private void FindClosestBone(Point2D.Double p)
     {
     	boolean closer = false;
+    	boolean anyBone = false;
     	Bone closestBone = new Bone();
     	Point2D.Double boneCenter = new Point2D.Double(0,0);
 	    Point2D.Double closestCenter = new Point2D.Double(0,0);
@@ -195,8 +192,10 @@ public class GraphicBoneYard extends JPanel
     	{
             if(bone.xMin != null && bone.xMax != null && bone.yMin != null && bone.yMax != null)
             {
-    	        if(p.getX() <= (bone.xMax - _WalkwayMin.getX()) * _XScale && p.getX() >= (bone.xMin - _WalkwayMin.getX()) * _XScale &&
-    	            p.getY() <= (bone.yMax - _WalkwayMin.getY()) * _YScale && p.getY() >= (bone.yMin - _WalkwayMin.getY()) * _YScale)
+    	        if(p.getX() <= (bone.xMax - _WalkwayMin.getX()) * _XScale
+    	         && p.getX() >= (bone.xMin - _WalkwayMin.getX()) * _XScale
+    	         && p.getY() >= (_WalkwayMax.getY() - bone.yMax) * _YScale 
+    	         && p.getY() <= (_WalkwayMax.getY() - bone.yMin) * _YScale)
     	        {
     	            boneCenter = new Point2D.Double(bone.xMax/2.0, bone.yMax/2.0);
     	    	
@@ -205,6 +204,7 @@ public class GraphicBoneYard extends JPanel
     		
     		        if(closer)
     		        {
+    		            anyBone = true;
     		    	    closer = false;
     		    	    closestBone = bone;
     		    	    closestCenter = new Point2D.Double(closestBone.xMax/2.0, closestBone.yMax/2.0);
@@ -212,7 +212,9 @@ public class GraphicBoneYard extends JPanel
     		    }
             }
     	}
-        System.out.println(closestBone);    	
+    	
+        if(anyBone)
+            ImageDisplay.DisplayBone(closestBone);	
     }
     
     private double DistanceFormula(Point2D.Double a, Point2D.Double b)
