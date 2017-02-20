@@ -6,6 +6,7 @@
 //package kiosk;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 import java.util.*;
@@ -19,6 +20,7 @@ public class GraphicBoneYard extends JPanel
     private Dimension _OriginalDimension = new Dimension(0,0);
     private Dimension _CurrentDimension = new Dimension(0,0);
     private ArrayList<Bone> _Bones = new ArrayList<>();
+    private Point _MousePosition = null;
     private boolean _FirstLoad = true;
     private double _Scale = 1;
     
@@ -27,6 +29,31 @@ public class GraphicBoneYard extends JPanel
         super();
         _Bones = BonePit.readBones();
         this.setDoubleBuffered(true);
+        
+        this.addMouseListener(new MouseAdapter()
+        {
+            @Override public void mousePressed(MouseEvent e) { _MousePosition = new Point(e.getX(), e.getY()); }
+            
+            @Override public void mouseReleased(MouseEvent e) { _MousePosition = null; }
+        });
+        
+        this.addMouseMotionListener(new MouseMotionAdapter()
+        {
+            @Override public void mouseDragged(MouseEvent e) 
+            {
+            	double x = e.getX() - _MousePosition.getX(); 
+            	double y = e.getY() - _MousePosition.getY();
+
+            	JViewport port = (JViewport)((JPanel)e.getSource()).getParent();
+            	Rectangle visible = port.getViewRect();
+            	
+            	visible.x -= x / (_Scale * 1);
+            	visible.y -= y / (_Scale * 1);
+            	
+            	scrollRectToVisible(visible);
+            }	
+        });
+        
     }
     
     @Override
@@ -47,13 +74,6 @@ public class GraphicBoneYard extends JPanel
         }
         
         Graphics2D graph = (Graphics2D)g;
-        AffineTransform at = new AffineTransform();
-
-        if(_Scale > 1)
-        {
-            //at.scale(1 + (_Scale/10), 1 + (_Scale/10));
-            //graph.setTransform(at);
-        }
         
         Draw(graph);
         graph.dispose();
@@ -111,7 +131,7 @@ public class GraphicBoneYard extends JPanel
     
     private void UpdatePreferredSize() 
     {
-        double d = 1 + (_Scale/2);
+        double d = 1 + (_Scale);
 
         int w = (int) (_OriginalDimension.getWidth() * d);
         int h = (int) (_OriginalDimension.getHeight() * d);
