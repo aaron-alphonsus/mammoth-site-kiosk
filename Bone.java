@@ -22,13 +22,13 @@ import javax.swing.*;
 public class Bone
 {
 	// Bone info
-	private String id;
-	private int year;
-	private String taxon;
-	private int objectNum;
-	private String completeness;
-	private String remarks;
-	private double elevation;
+	public String id;
+	public int year;
+	public String taxon;
+	public int objectNum;
+	public String completeness;
+	public String remarks;
+	public double elevation;
 
 	// Drawing info
 	// private int nShapes;
