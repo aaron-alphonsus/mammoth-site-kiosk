@@ -33,6 +33,15 @@ public class GraphicBoneYard extends JPanel
 	private double _minElevation = 0.0;
 	private double _maxElevation = 0.0;
 
+	// Wether or not to draw thinsg
+	private boolean _drawMale = true;
+	private boolean _drawFemale = true;
+	private boolean _drawColumbi = true;
+	private boolean _drawPrimigenius = true;
+	private boolean _drawUnidentifiedMammoth = true;
+	private boolean _drawUnidentified = true;
+	private boolean _drawUndesignated = true;
+
 	public GraphicBoneYard() {
 		super();
 		_Bones = BonePit.readBones();
@@ -138,6 +147,44 @@ public class GraphicBoneYard extends JPanel
 		scrollRectToVisible(visible);
 	}
 
+	// Setters for filters
+	public void setDrawMale(boolean _drawMale) {
+	    this._drawMale = _drawMale;
+	    repaint();
+	}
+
+	public void setDrawFemale(boolean _drawFemale) {
+	    this._drawFemale = _drawFemale;
+	    repaint();
+	}
+
+	public void setDrawUndesignated(boolean _drawUndesignated) {
+	    this._drawUndesignated = _drawUndesignated;
+	    repaint();
+	}
+
+	public void setDrawColumbi(boolean _drawColumbi) {
+	    this._drawColumbi = _drawColumbi;
+	    repaint();
+	}
+
+	public void setDrawPrimigenius(boolean _drawPrimigenius) {
+	    this._drawPrimigenius = _drawPrimigenius;
+	    repaint();
+	}
+
+	public void setDrawUnidentifiedMammoth(boolean _drawUnidentifiedMammoth) {
+	    this._drawUnidentifiedMammoth = _drawUnidentifiedMammoth;
+	    repaint();
+	}
+
+	public void setDrawUnidentified(boolean _drawUnidentified) {
+	    this._drawUnidentified = _drawUnidentified;
+	    repaint();
+	}
+
+	// Priavte methods
+
 	private void Draw(Graphics2D graph) {
 		double topMargin = 5;
 		double botMargin = 5;
@@ -166,8 +213,34 @@ public class GraphicBoneYard extends JPanel
 			// The slider value enables/disables bones based on an elevation threshhold
 			double elev = bone.elevation;
 			double threshhold = (((_maxElevation - _minElevation) / 5) * (sliderValue) + 1) + _minElevation;
-			if (bone.elevation <= threshhold)
+
+			// Decide if we need to draw this bone based on filters
+			boolean drawGender = false;
+			if (bone.gender.equals("MALE") && _drawMale) {
+				drawGender = true;
+			} else if (bone.gender.equals("FEMALE") && _drawFemale) {
+				drawGender = true;
+			} else if (bone.gender.equals("UNDESIGNATED") && _drawUndesignated) {
+				drawGender = true;
+			}
+
+			boolean drawTaxon = false;
+			if (bone.taxon.equals("MAMMUTHUS COLUMBI") && _drawColumbi) {
+				drawTaxon = true;
+			} else if (bone.taxon.equals("UNIDENTIFIED MAMMOTH") && _drawUnidentifiedMammoth) {
+				drawTaxon = true;
+			} else if (bone.taxon.equals("UNIDENTIFIED") && _drawUnidentified) {
+				drawTaxon = true;
+			} else if (bone.taxon.equals("MAMMUTHUS PRIMIGENIUS") && _drawPrimigenius) {
+				drawTaxon = true;
+			}
+
+			// A bone isn't visible until it's drawn
+			bone.isVisible = false;
+			if (bone.elevation <= threshhold && drawTaxon && drawGender)
 			{
+				bone.isVisible = true;
+
 				// Select our colour based on completeness
 				if (bone.completeness.equals("CO")) { // Complete bone?
 					graph.setColor(Color.green);

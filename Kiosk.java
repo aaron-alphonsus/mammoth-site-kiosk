@@ -145,21 +145,93 @@ public class Kiosk extends JFrame
 
 	private JPanel CreateMainKioskScrollPane()
 	{
-		JPanel scrollPanel = new JPanel();
-		JScrollPane pane = new JScrollPane();
+		JPanel filterMenu = new JPanel();
 
-		scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
-		JLabel label = new JLabel("Inventory");
-		label.setHorizontalAlignment(JLabel.CENTER);
+		// Add a border to our thing so it looks "nice"
+		filterMenu.setBorder(BorderFactory.createTitledBorder("Filter Bones"));
 
-		pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPanel.setPreferredSize(new Dimension(250, 600));
+		// Set left orientation
+		filterMenu.setAlignmentX(JScrollPane.LEFT_ALIGNMENT);
 
-		scrollPanel.add(label);
-		scrollPanel.add(pane);
+		// Add check boxes
+		// I really like anonymous class.  ISorry, not sorry :)
+		JCheckBox cb = new JCheckBox("Show male bones", true);
+		cb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox b = (JCheckBox) e.getSource();
+				_BoneYard.setDrawMale(b.getModel().isSelected());
+				((JCheckBox)e.getSource()).getTopLevelAncestor().requestFocus();
+			}
+		});
+		filterMenu.add(cb);
 
-		return scrollPanel;
+		cb = new JCheckBox("Show female bones", true);
+		cb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox b = (JCheckBox) e.getSource();
+				_BoneYard.setDrawFemale(b.getModel().isSelected());
+				((JCheckBox)e.getSource()).getTopLevelAncestor().requestFocus();
+			}
+		});
+		filterMenu.add(cb);
+
+		cb = new JCheckBox("Show undesignated bones", true);
+		cb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox b = (JCheckBox) e.getSource();
+				_BoneYard.setDrawUndesignated(b.getModel().isSelected());
+				((JCheckBox)e.getSource()).getTopLevelAncestor().requestFocus();
+			}
+		});
+		filterMenu.add(cb);
+
+		cb = new JCheckBox("Show mammuthus columbi", true);
+		cb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox b = (JCheckBox) e.getSource();
+				_BoneYard.setDrawColumbi(b.getModel().isSelected());
+				((JCheckBox)e.getSource()).getTopLevelAncestor().requestFocus();
+			}
+		});
+		filterMenu.add(cb);
+
+		cb = new JCheckBox("Show mammuthus primigenius", true);
+		cb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox b = (JCheckBox) e.getSource();
+				_BoneYard.setDrawPrimigenius(b.getModel().isSelected());
+				((JCheckBox)e.getSource()).getTopLevelAncestor().requestFocus();
+			}
+		});
+		filterMenu.add(cb);
+
+		cb = new JCheckBox("Show unidentified mammoth", true);
+		cb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox b = (JCheckBox) e.getSource();
+				_BoneYard.setDrawUnidentifiedMammoth(b.getModel().isSelected());
+				((JCheckBox)e.getSource()).getTopLevelAncestor().requestFocus();
+			}
+		});
+		filterMenu.add(cb);
+
+		cb = new JCheckBox("Show unidentified bones", true);
+		cb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox b = (JCheckBox) e.getSource();
+				_BoneYard.setDrawUnidentified(b.getModel().isSelected());
+				((JCheckBox)e.getSource()).getTopLevelAncestor().requestFocus();
+			}
+		});
+		filterMenu.add(cb);
+
+
+
+		// pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		// pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		filterMenu.setPreferredSize(new Dimension(250, 600));
+
+		return filterMenu;
 	}
 
 	private JPanel CreateMainKioskBoneYardPanel()

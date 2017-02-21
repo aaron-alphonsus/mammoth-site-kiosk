@@ -27,6 +27,7 @@ public class Bone
 	public String taxon;
 	public int objectNum;
 	public String completeness;
+	public String gender;
 	public String remarks;
 	public double elevation;
 
@@ -35,6 +36,7 @@ public class Bone
 	// private int nVerticies;
 	public Double xMin, xMax, yMin, yMax;
 	public ArrayList<ArrayList<Point2D.Double>> polylines = new ArrayList<ArrayList<Point2D.Double>>();
+	public Boolean isVisible;
 
 	// DONT USE THIS CONSTRUCTOR
 	public Bone() {
@@ -42,7 +44,7 @@ public class Bone
 	}
 
 	// USE THIS CONSTRUCTOR
-	public Bone(String id, int year, String taxon, int objectNum, String completeness, String remarks, double elevation) {
+	public Bone(String id, int year, String taxon, int objectNum, String completeness, String gender, String remarks, double elevation) {
 
 		// Put in all the stuff given to us
 		this.id = id;
@@ -50,6 +52,7 @@ public class Bone
 		this.taxon = taxon;
 		this.objectNum = objectNum;
 		this.completeness = completeness;
+		this.gender = gender;
 		this.remarks = remarks;
 		this.elevation = elevation;
 
