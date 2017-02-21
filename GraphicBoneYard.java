@@ -29,13 +29,9 @@ public class GraphicBoneYard extends JPanel
 	private double _DeltaY = 0;
 	private double _XScale = 0;
 	private double _YScale = 0;
-<<<<<<< HEAD
 	private int _Scale = 1;
-=======
-	private double _Scale = 1;
 	private double _minElevation = 0.0;
 	private double _maxElevation = 0.0;
->>>>>>> 8dd921b7ba8fbbdeec7dfe5240626538e1471d22
 
 	public GraphicBoneYard() {
 		super();
