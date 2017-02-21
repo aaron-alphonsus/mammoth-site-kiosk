@@ -25,6 +25,7 @@ public class BonePit
 {
 	private static ArrayList<Bone> bones = null;
 	private static double minElevation;
+	private static double maxElevation;
 
 	public static double getMinElevation( ) {
 		if (bones == null) {
@@ -32,6 +33,14 @@ public class BonePit
 		}
 
 		return minElevation;
+	}
+
+	public static double getMaxElevation( ) {
+		if (bones == null) {
+			readBones();
+		}
+
+		return maxElevation;
 	}
 
 	public static ArrayList<Bone> readBones( )
@@ -111,6 +120,8 @@ public class BonePit
 					elevation = sc.nextDouble();
 					if (elevation < minElevation) {
 						minElevation = elevation;
+					} else if (elevation > maxElevation) {
+						maxElevation = elevation;
 					}
 				}
 			}
