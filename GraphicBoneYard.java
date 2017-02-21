@@ -20,6 +20,7 @@ public class GraphicBoneYard extends JPanel
 	private Dimension _OriginalDimension = new Dimension(0,0);
 	private Dimension _CurrentDimension = new Dimension(0,0);
 	private ArrayList<Bone> _Bones = new ArrayList<>();
+	private Point2D.Double _VisibleCenter = null;
 	private Point2D.Double _WalkwayMin = null;
 	private Point2D.Double _WalkwayMax = null;
 	private Point _MousePosition = null;
@@ -76,6 +77,8 @@ public class GraphicBoneYard extends JPanel
         {
             _OriginalDimension = this.getSize();
             _CurrentDimension = this.getSize();
+            _VisibleCenter = new Point2D.Double(_CurrentDimension.getWidth()/2.0, _CurrentDimension.getHeight()/2.0);
+            System.out.println(_VisibleCenter);
             _FirstLoad = false;
         }
                
@@ -90,12 +93,10 @@ public class GraphicBoneYard extends JPanel
 	
 	    if(scale > 0 && scale < _Scale)
 	    {
-	        _Scale = scale;
 	        UpdatePreferredSize(-1);
 	    }
 	    else if (scale > 0 && scale > _Scale)
 	    {
-	        _Scale = scale;
 	        UpdatePreferredSize(1);
 	    }
 	}
@@ -144,30 +145,38 @@ public class GraphicBoneYard extends JPanel
 	}
 
 	private void UpdatePreferredSize(int resize) {
-        Point2D.Double oldCenter = new Point2D.Double(_CurrentDimension.getWidth()/2, _CurrentDimension.getHeight()/2);
-        
-		_CurrentDimension.setSize((int)(_OriginalDimension.getWidth() * _Scale), (int)(_OriginalDimension.getHeight() * _Scale));
-        Point2D.Double scaledCenter = new Point2D.Double(_CurrentDimension.getWidth()/2, _CurrentDimension.getHeight()/2);
+		_CurrentDimension.setSize((int)(_OriginalDimension.getWidth() * (_Scale + resize)), (int)(_OriginalDimension.getHeight() * (_Scale + resize)));
 		JViewport port = (JViewport)this.getParent();
-		this.setPreferredSize(_CurrentDimension);
-		Point viewCenter = getViewPortCenter();
 		Rectangle visible = port.getViewRect();
+		double centerX, centerY;
 		
 		if(resize > 0)
 		{
-		    visible.x = (int)viewCenter.getX() + (int)(scaledCenter.getX() / oldCenter.getX()) * (int)_Scale;
-		    visible.y = (int)viewCenter.getY() + (int)(scaledCenter.getY() / oldCenter.getY()) * (int)_Scale;
+		    //centerX = visible.x + _CurrentDimension.getWidth() / 2;
+		    //centerY = visible.y + _CurrentDimension.getHeight() / 2;
+		    visible.x = (int)((visible.x / _Scale) * (_Scale + resize));
+		    visible.y = (int)((visible.y / _Scale) * (_Scale + resize));
+		    //visible.x = (int)(centerX - visible.getWidth()/2);
+		    //visible.y = (int)(centerY - visible.getHeight()/2);
 	    }
 	    else
 	    {
-	        visible.x = (int)scaledCenter.getX();
-		    visible.y = (int)scaledCenter.getX();
+	        centerX = visible.x + visible.getWidth()/2;
+	        centerY = visible.y + visible.getHeight()/2;
+	        Point2D.Double deScaledCenterPoint = new Point2D.Double(centerX * (2.0/_Scale), centerY * (2.0/_Scale));
+	        
+	        visible.x = (int)(centerX * (2.0/_Scale) - visible.getWidth()/2);
+	        visible.y = (int)(centerY * (2.0/_Scale) - visible.getHeight()/2);
 	    }	
 
-        scrollRectToVisible(visible);
+        this.setPreferredSize(_CurrentDimension);
+        port.setViewPosition(new Point(visible.x, visible.y));
+        //scrollRectToVisible(visible);
 		getParent().doLayout();
 		revalidate();
 		repaint();
+		
+		_Scale = _Scale + resize;
 	}
 
 	private Point getViewPortCenter() {
