@@ -23,7 +23,6 @@ public class Kiosk extends JFrame
 
 	private GraphicBoneYard _BoneYard = null;
 	private int _SliderValue = 0;
-	private int _ZoomFactor = 1;
 
 	// Public Static variables
 	public static String path = "bonexml/";
@@ -223,7 +222,6 @@ public class Kiosk extends JFrame
 	{
 		JButton zoomOut = new JButton ("-");
 		JButton zoomIn = new JButton("+");
-		//JLabel label = new JLabel(" Value: " + _ZoomFactor);
 		JPanel zoomPanel = new JPanel();
 
 		ActionListener zoomListener = new ActionListener()
@@ -233,7 +231,6 @@ public class Kiosk extends JFrame
 			{
 				if(e.getSource() == zoomIn) setZoomFactor(1);
 				else setZoomFactor(-1);
-				//label.setText((" Value: " + _ZoomFactor));
 				((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
 			}
 		};
@@ -242,7 +239,6 @@ public class Kiosk extends JFrame
 
 		zoomPanel.setLayout(new GridLayout(0, 1));
 		zoomPanel.add(zoomIn);
-		//zoomPanel.add(label);
 		zoomPanel.add(zoomOut);
 
 		toolBar.add(zoomPanel);

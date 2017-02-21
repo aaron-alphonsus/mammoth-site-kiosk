@@ -48,11 +48,21 @@ public class GraphicBoneYard extends JPanel
 			
 			@Override public void mouseClicked(MouseEvent e) 
 			{ 
-			    if(e.getClickCount() == 2)
-			    {
-			        ZoomToPoint( new Point(e.getX(), e.getY()) );
+			    if(SwingUtilities.isLeftMouseButton(e)){
+			        java.util.Timer singleClick = new java.util.Timer();
+			        
+			        singleClick.schedule(new TimerTask(){    
+			            @Override public void run(){
+			                if(e.getClickCount() == 1){
+			                    ((GraphicBoneYard)e.getSource()).FindClosestBone( new Point2D.Double(e.getX(), e.getY()) );
+			                }
+			            }
+			        }, 325);
+			        
+			        if(e.getClickCount() == 2){
+			            ZoomToPoint( new Point(e.getX(), e.getY()) );
+			        }
 			    }
-			    else ((GraphicBoneYard)e.getSource()).FindClosestBone( new Point2D.Double(e.getX(), e.getY()) );
 			}
 		});
 
