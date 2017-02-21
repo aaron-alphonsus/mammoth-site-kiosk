@@ -10,6 +10,10 @@ Author: John M. Weiss, Ph.D.
 Class:  CSC468 GUI Programming
 Date:   Spring 2017
 
+TODO:   Create Resources folder for default img
+        Right-align descriptions
+        javadoc
+
 */
 
 import java.awt.event.*;
@@ -157,7 +161,7 @@ public class ImageDisplay extends JFrame
                 if (boneImage.exists())
                     new ImageDisplay("bonexml/" + bone.id + ".jpg", bone);
                 else 
-                    new ImageDisplay("bonexml/default.jpg", bone);
+                    new ImageDisplay("resources/default.jpg", bone);
             }
         });
     }
