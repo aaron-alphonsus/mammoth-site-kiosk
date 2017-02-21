@@ -52,17 +52,26 @@ public class Kiosk extends JFrame
 			        int incValue = 10;
 			        switch( e.getKeyCode() ) { 
                         case (KeyEvent.VK_UP):
-                            _BoneYard.AdjustScrollWithArrows(0, -incValue);
-                            break;
-                        case KeyEvent.VK_DOWN:
-                            _BoneYard.AdjustScrollWithArrows(0, incValue);
-                            break;
-                        case KeyEvent.VK_LEFT:
-                            _BoneYard.AdjustScrollWithArrows(-incValue, 0);
-                            break;
-                        case KeyEvent.VK_RIGHT :
-                            _BoneYard.AdjustScrollWithArrows(incValue, 0);
-                            break;
+                             _BoneYard.AdjustScrollWithArrows(0, -incValue);
+                             break;
+                        case (KeyEvent.VK_DOWN):
+                             _BoneYard.AdjustScrollWithArrows(0, incValue);
+                             break;
+                        case (KeyEvent.VK_LEFT):
+                             _BoneYard.AdjustScrollWithArrows(-incValue, 0);
+                             break;
+                        case (KeyEvent.VK_RIGHT) :
+                             _BoneYard.AdjustScrollWithArrows(incValue, 0);
+                             break;
+                        case (KeyEvent.VK_ADD) :
+                        case (KeyEvent.VK_EQUALS) : //Couldn't figure out the keystroke for (SHIFT + '+')
+                             _BoneYard.setScale(1);
+                             break;
+                        case (KeyEvent.VK_SUBTRACT) : 
+                        case (KeyEvent.VK_MINUS) :
+                             _BoneYard.setScale(-1);
+                             break;
+                        default: break;
                     }
 			    }
 			}
