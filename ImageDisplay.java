@@ -29,10 +29,19 @@ public class ImageDisplay extends JFrame
         super( boneImage );
         
         // use KeyAdapter to handle keypresses (Escape exits)
-        addKeyListener( new KeyAdapter() {
+        addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
-                if ( e.getKeyCode() == 27 ) System.exit( 0 );
+                if (e.getKeyCode() == 27) {
+                    setVisible(false);
+                    dispose();
+                }
             }
+        });
+
+        addComponentListener(new ComponentAdapter()
+        {
+            @Override public void componentShown(ComponentEvent e) { if(!hasFocus()) requestFocus(); }
+            @Override public void componentMoved(ComponentEvent e) { if(!hasFocus()) requestFocus(); }
         });
         
         // Creates arrays with bone details and labels for bone details.
@@ -40,8 +49,10 @@ public class ImageDisplay extends JFrame
             "Completeness", "Elevation"};
         String[] properties = CreatePropertiesArray(bone);
         
-        // Creates the 'details' panel which has following fields:
-        // id, year, taxon, objectNum, completeness, elevation
+        /*
+        Creates the 'details' panel which has following fields:
+        id, year, taxon, objectNum, completeness, elevation
+        */
         JPanel details = new JPanel();
         details.setLayout( new BoxLayout(details, BoxLayout.Y_AXIS));
         getContentPane().add(details, BorderLayout.PAGE_START );
@@ -79,10 +90,11 @@ public class ImageDisplay extends JFrame
         // boneID has been tested earlier
         properties[0] = bone.id;
         
-        // Checks if any property is empty so that N/A can be displayed 
-        // instead of empty string.
-        
-        if (String.valueOf(bone.year) != null && 
+        /*
+        Checks if any property is empty so that N/A can be displayed
+        instead of empty string.
+        */
+        if (String.valueOf(bone.year) != null &&
             !String.valueOf(bone.year).isEmpty())
             properties[1] = String.valueOf(bone.year);
             
@@ -121,8 +133,10 @@ public class ImageDisplay extends JFrame
     
     public void AddTextArea (JPanel container, String text)
     {
-        // Creates a text area and sets properties of fields to display as
-        // required.
+        /*
+        Creates a text area and sets properties of fields to display as
+        required.
+        */
         JTextArea textarea = new JTextArea();
         textarea.setText(text);
         textarea.setLineWrap(true);
@@ -148,11 +162,11 @@ public class ImageDisplay extends JFrame
         });
     }
 
-    // // main() function for testing
-    // public static void main(String[] args)
-    // {   
-        // // Creates bone list and displays first bone
-        // ArrayList<Bone> bones = BonePit.readBones();
-		// DisplayBone(bones.get(4));
-    // }
+     // main() function for testing
+     public static void main(String[] args)
+     {
+         // Creates bone list and displays first bone
+         ArrayList<Bone> bones = BonePit.readBones();
+		 DisplayBone(bones.get(4));
+     }
 }
