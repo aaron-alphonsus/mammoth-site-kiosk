@@ -172,11 +172,12 @@ public class Kiosk extends JFrame
 				_SliderValue = source.getValue();
 				label.setText( (" Value: " + (Integer)_SliderValue) );
 				source.transferFocusBackward(); //set focus back to JFrame
+				_BoneYard.setSliderValue(_SliderValue);
 			}
 		});
 
 		slider.setMinimum(1);
-		slider.setMaximum(10);
+		slider.setMaximum(5);
 
 		slider.setMajorTickSpacing(1);
 		slider.setMinorTickSpacing(1);

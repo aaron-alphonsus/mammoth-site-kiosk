@@ -25,16 +25,20 @@ public class GraphicBoneYard extends JPanel
 	private Point2D.Double _WalkwayMax = null;
 	private Point _MousePosition = null;
 	private boolean _FirstLoad = true;
-	private int sliderValue = 10;
+	private int sliderValue = 5;
 	private double _DeltaX = 0;
 	private double _DeltaY = 0;
 	private double _XScale = 0;
 	private double _YScale = 0;
 	private double _Scale = 1;
+	private double _minElevation = 0.0;
+	private double _maxElevation = 0.0;
 
 	public GraphicBoneYard() {
 		super();
 		_Bones = BonePit.readBones();
+		_minElevation = BonePit.getMinElevation();
+		_maxElevation = BonePit.getMaxElevation();
 		this.setDoubleBuffered(true);
 
 		this.addMouseListener(new MouseAdapter()
@@ -132,13 +136,19 @@ public class GraphicBoneYard extends JPanel
 
 		for(Bone bone : _Bones)
 		{
-			for (ArrayList<Point2D.Double> line : bone.polylines)
+			// The slider value enables/disables bones based on an elevation threshhold
+			double elev = bone.elevation;
+			double threshhold = (((_maxElevation - _minElevation) / 5) * (sliderValue) + 1) + _minElevation;
+			if (bone.elevation <= threshhold)
 			{
-				for(int i = 0; i < line.size() - 1; i++)
+				for (ArrayList<Point2D.Double> line : bone.polylines)
 				{
-					Point2D.Double p1 = line.get(i);
-					Point2D.Double p2 = line.get(i+1);
-					graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((yMax - p1.getY())* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((yMax - p2.getY())* _YScale));
+					for(int i = 0; i < line.size() - 1; i++)
+					{
+						Point2D.Double p1 = line.get(i);
+						Point2D.Double p2 = line.get(i+1);
+						graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((yMax - p1.getY())* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((yMax - p2.getY())* _YScale));
+					}
 				}
 			}
 		}
