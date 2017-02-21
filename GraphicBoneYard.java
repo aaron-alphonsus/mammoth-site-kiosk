@@ -140,6 +140,17 @@ public class GraphicBoneYard extends JPanel
 			double threshhold = (((_maxElevation - _minElevation) / 5) * (sliderValue) + 1) + _minElevation;
 			if (bone.elevation <= threshhold)
 			{
+				// Select our colour based on completeness
+				if (bone.completeness.equals("CO")) { // Complete bone?
+					graph.setColor(Color.green);
+				} else if (bone.completeness.equals("PC")) { // Partially complete?
+					graph.setColor(Color.orange);
+				} else if (bone.completeness.equals("PE")) { // Partially Excavated?
+					graph.setColor(Color.red);
+				} else { // SHAFT?
+					graph.setColor(Color.black);
+				}
+
 				for (ArrayList<Point2D.Double> line : bone.polylines)
 				{
 					for(int i = 0; i < line.size() - 1; i++)
