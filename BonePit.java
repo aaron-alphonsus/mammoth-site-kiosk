@@ -61,7 +61,7 @@ public class BonePit
 			// Get root node, generate list of bonerec objects
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse( "bonexml/bones.xml" );
+			Document document = builder.parse( Kiosk.path + "bones.xml" );
 			document.normalize();
 			Element root = document.getDocumentElement();
 			bonerecs = root.getChildNodes();
@@ -95,19 +95,18 @@ public class BonePit
 				// System.out.println("Child is " + child);
 
 				if (child.getNodeName().equals("uniqueid")) {
-					Scanner sc = new Scanner( child.getTextContent().trim() );
-					id = sc.next();
+					id = child.getTextContent().trim();
 				}
 				else if (child.getNodeName().equals("year")) {
 					Scanner sc = new Scanner( child.getTextContent().trim() );
-					year = sc.nextInt();
+					year = Integer.parseInt(sc.next());
 				}
 				else if (child.getNodeName().equals("taxon")) {
 					taxon = child.getTextContent().trim();
 				}
 				else if (child.getNodeName().equals("objectnum")) {
 					Scanner sc = new Scanner( child.getTextContent().trim() );
-					objectNum = sc.nextInt();
+					objectNum = Integer.parseInt(sc.next());
 				}
 				else if (child.getNodeName().equals("completeness")) {
 					completeness = child.getTextContent().trim();
@@ -117,7 +116,7 @@ public class BonePit
 				}
 				else if (child.getNodeName().equals("elevation")) {
 					Scanner sc = new Scanner( child.getTextContent().trim() );
-					elevation = sc.nextDouble();
+					elevation = Double.parseDouble(sc.next());
 					if (elevation < minElevation) {
 						minElevation = elevation;
 					} else if (elevation > maxElevation) {

@@ -10,6 +10,9 @@ Author: John M. Weiss, Ph.D.
 Class:  CSC468 GUI Programming
 Date:   Spring 2017
 
+TODO:   Right-align descriptions
+        javadoc
+
 */
 
 import java.awt.event.*;
@@ -153,11 +156,11 @@ public class ImageDisplay extends JFrame
         SwingUtilities.invokeLater( new Runnable() {
             public void run() {
                 // If boneID.jpg not found, displays default.jpg
-                File boneImage = new File("bonexml/" + bone.id + ".jpg");
+                File boneImage = new File(Kiosk.path + bone.id + ".jpg");
                 if (boneImage.exists())
-                    new ImageDisplay("bonexml/" + bone.id + ".jpg", bone);
+                    new ImageDisplay(Kiosk.path + bone.id + ".jpg", bone);
                 else 
-                    new ImageDisplay("bonexml/default.jpg", bone);
+                    new ImageDisplay("resources/default.jpg", bone);
             }
         });
     }

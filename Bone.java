@@ -74,7 +74,7 @@ public class Bone
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse( "bonexml/" + id + ".xml" );
+			Document document = builder.parse( Kiosk.path + id + ".xml" );
 			root = document.getDocumentElement();
 		} catch (Exception e) {
 			// System.out.println( e.toString() );
@@ -113,8 +113,8 @@ public class Bone
 
 				if(pair.getNodeName().equals("xy")) {
 					Scanner sc = new Scanner( pair.getTextContent().trim() );
-					double x = sc.nextDouble();
-					double y = sc.nextDouble();
+					double x = Double.parseDouble(sc.next());
+					double y = Double.parseDouble(sc.next());
 					Point2D.Double p = new Point2D.Double(x, y);
 					temp.add(p);
 				}
