@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.io.*;
 
 
 /**
@@ -24,8 +25,8 @@ public class Kiosk extends JFrame
 	private int _SliderValue = 0;
 	private int _ZoomFactor = 1;
 
-	//End Private Class Members
-
+	// Public Static variables
+	public static String path = "bonexml/";
 
 	// Class Constructor
 
@@ -84,6 +85,30 @@ public class Kiosk extends JFrame
 	 */
 	public static void main(String[] args)
 	{
+		File f = new File("bonexml/bones.xml");
+		if(!f.exists()) {
+			while(true)
+		    {
+		    	JFileChooser jfc = new JFileChooser();
+    		    jfc.setCurrentDirectory(new File(System.getProperty("user.home")));
+    		    jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    		    jfc.setDialogTitle("Select your bonexml folder");
+    		    int retval = jfc.showOpenDialog(null);
+    		    
+    		    // Leave if they don't give us XML
+    		    if (retval != JFileChooser.APPROVE_OPTION) {
+    		    	System.exit(0);
+    		    }
+    
+    		    // Get the selected file
+    		    f = jfc.getSelectedFile();
+    		    if (f.getName().equals("bonexml") && f.isDirectory()) {
+    		    	break;
+    		    }
+		    }
+		    Kiosk.path = f.getAbsolutePath() + "/";
+		}
+
 		SwingUtilities.invokeLater(new Runnable() { public void run() { CreateAndShowGUI(); } });
 	}
 

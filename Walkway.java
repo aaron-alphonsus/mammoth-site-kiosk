@@ -49,7 +49,7 @@ public class Walkway
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse( "bonexml/walkway.xml" );
+			Document document = builder.parse( Kiosk.path + "walkway.xml" );
 			root = document.getDocumentElement();
 		} catch (Exception e) {
 			// System.out.println( e.toString() );
