@@ -122,7 +122,6 @@ public class GraphicBoneYard extends JPanel
         _DeltaY = (ww.yMax + botMargin)- (ww.yMin - topMargin);
 		_XScale = _CurrentDimension.getWidth() / (_DeltaX);
 		_YScale = _CurrentDimension.getHeight() / (_DeltaY);
-        double yMax = ww.yMax;
 
 		for(ArrayList<Point2D.Double> line : ww.polylines)
 		{
@@ -130,7 +129,7 @@ public class GraphicBoneYard extends JPanel
 			{
 				Point2D.Double p1 = line.get(i);
 				Point2D.Double p2 = line.get(i+1);
-				graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((yMax - p1.getY())* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((yMax - p2.getY())* _YScale));
+				graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((ww.yMax - p1.getY())* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((ww.yMax - p2.getY())* _YScale));
 			}
 		}
 
@@ -147,7 +146,7 @@ public class GraphicBoneYard extends JPanel
 					{
 						Point2D.Double p1 = line.get(i);
 						Point2D.Double p2 = line.get(i+1);
-						graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((yMax - p1.getY())* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((yMax - p2.getY())* _YScale));
+						graph.drawLine((int) ((p1.getX() - ww.xMin) * _XScale), (int)((ww.yMax - p1.getY())* _YScale), (int)((p2.getX() - ww.xMin)* _XScale), (int)((ww.yMax - p2.getY())* _YScale));
 					}
 				}
 			}
