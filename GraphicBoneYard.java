@@ -310,7 +310,7 @@ public class GraphicBoneYard extends JPanel
 	    
     	for(Bone bone : _Bones)
     	{
-            if(bone.xMin != null && bone.xMax != null && bone.yMin != null && bone.yMax != null)
+            if( bone.isVisible && bone.xMin != null && bone.xMax != null && bone.yMin != null && bone.yMax != null)
             {
     	        if(p.getX() <= (bone.xMax - _WalkwayMin.getX()) * _XScale
     	         && p.getX() >= (bone.xMin - _WalkwayMin.getX()) * _XScale
