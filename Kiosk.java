@@ -197,7 +197,7 @@ public class Kiosk extends JFrame
 	{
 		JButton zoomOut = new JButton ("-");
 		JButton zoomIn = new JButton("+");
-		JLabel label = new JLabel(" Value: " + _ZoomFactor);
+		//JLabel label = new JLabel(" Value: " + _ZoomFactor);
 		JPanel zoomPanel = new JPanel();
 
 		ActionListener zoomListener = new ActionListener()
@@ -205,18 +205,18 @@ public class Kiosk extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if(e.getSource() == zoomIn) setZoomFactor(_ZoomFactor + 1);
-				else setZoomFactor(_ZoomFactor - 1);
-				label.setText((" Value: " + _ZoomFactor));
+				if(e.getSource() == zoomIn) setZoomFactor(1);
+				else setZoomFactor(-1);
+				//label.setText((" Value: " + _ZoomFactor));
 				((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
 			}
 		};
 		zoomIn.addActionListener(zoomListener);
 		zoomOut.addActionListener(zoomListener);
 
-		zoomPanel.setLayout(new GridLayout(0, 2));
+		zoomPanel.setLayout(new GridLayout(0, 1));
 		zoomPanel.add(zoomIn);
-		zoomPanel.add(label);
+		//zoomPanel.add(label);
 		zoomPanel.add(zoomOut);
 
 		toolBar.add(zoomPanel);
@@ -224,11 +224,7 @@ public class Kiosk extends JFrame
 
 	private void setZoomFactor(int newValue)
 	{
-		if(newValue > 0)
-		{
-			_ZoomFactor = newValue;
-			_BoneYard.setScale(_ZoomFactor);
-		}
+	    _BoneYard.setScale(newValue);
 	}
 
 	//End Private Class Methods
