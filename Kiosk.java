@@ -244,11 +244,15 @@ public class Kiosk extends JFrame
 	{
 		JPanel kioskControls = new JPanel();
 		JToolBar toolBar = new JToolBar();
-
+		kioskControls.setLayout(new GridLayout(1, 0));
+        
 		SetSliderControl(toolBar);
 		SetZoomControls(toolBar);
+		SetResetControl(toolBar);
 
+        toolBar.setFloatable(false);
 		kioskControls.add(toolBar);
+		kioskControls.add(new JLabel("     "));
 
 		return kioskControls;
 	}
@@ -257,7 +261,6 @@ public class Kiosk extends JFrame
 	{
 		JPanel sliderPanel = new JPanel();
 		JSlider slider = new JSlider();
-		JLabel label = new JLabel( (" Value: " + (Integer)_SliderValue) );
 
 		slider.addChangeListener((ChangeEvent e) ->
 		{
@@ -266,7 +269,6 @@ public class Kiosk extends JFrame
 			if(!source.getValueIsAdjusting())
 			{
 				_SliderValue = source.getValue();
-				label.setText( (" Value: " + (Integer)_SliderValue) );
 				source.transferFocusBackward(); //set focus back to JFrame
 				_BoneYard.setSliderValue(_SliderValue);
 			}
@@ -282,11 +284,12 @@ public class Kiosk extends JFrame
 		slider.setPaintLabels(true);
 		slider.setSnapToTicks(true);
 
-		sliderPanel.setLayout(new GridLayout(0, 2));
+        JLabel sliderLabel = new JLabel("Elevation: ");
+		sliderPanel.setLayout(new GridLayout(2, 1));
+		sliderLabel.setAlignmentX(JLabel.CENTER);
+		sliderPanel.add(sliderLabel);
 		sliderPanel.add(slider);
-
-		sliderPanel.add(label);
-
+		
 		toolBar.add(sliderPanel);
 	}
 
@@ -309,11 +312,36 @@ public class Kiosk extends JFrame
 		zoomIn.addActionListener(zoomListener);
 		zoomOut.addActionListener(zoomListener);
 
+		zoomOut.setPreferredSize(new Dimension(30, 30));
+		zoomIn.setPreferredSize(new Dimension(30, 30));
 		zoomPanel.setLayout(new GridLayout(0, 1));
+		JLabel zoomLabel = new JLabel("Zoom: ");
+		zoomLabel.setAlignmentX(JLabel.CENTER);
+		zoomPanel.add(zoomLabel);
 		zoomPanel.add(zoomIn);
 		zoomPanel.add(zoomOut);
 
+        zoomPanel.setPreferredSize(new Dimension(30, 75));
+        zoomPanel.setAlignmentX(JToolBar.RIGHT);
 		toolBar.add(zoomPanel);
+	}
+	
+	private void SetResetControl(JToolBar toolBar)
+	{
+	    JButton reset = new JButton("Reset");
+	    JPanel resetPanel = new JPanel();
+	    ActionListener ResetListener = new ActionListener()
+	    {
+	        @Override public void actionPerformed(ActionEvent e)
+	        {
+	            _BoneYard.Reset();
+	            ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
+	        }  
+	    };
+	    reset.addActionListener(ResetListener);
+	    
+	    resetPanel.add(reset);
+	    toolBar.add(resetPanel);
 	}
 
 	private void setZoomFactor(int newValue)

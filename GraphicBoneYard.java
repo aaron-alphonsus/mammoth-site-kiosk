@@ -66,7 +66,7 @@ public class GraphicBoneYard extends JPanel
 			                    ((GraphicBoneYard)e.getSource()).FindClosestBone( new Point2D.Double(e.getX(), e.getY()) );
 			                }
 			            }
-			        }, 325);
+			        }, 375);
 			        
 			        if(e.getClickCount() == 2){
 			            ZoomToPoint( new Point(e.getX(), e.getY()) );
@@ -126,6 +126,16 @@ public class GraphicBoneYard extends JPanel
 
 	public void setSliderValue(int val) {
 		this.sliderValue = val;
+		repaint();
+	}
+	
+	public void Reset()
+	{
+	    _CurrentDimension.setSize(_OriginalDimension.getWidth(), _OriginalDimension.getHeight());
+	    this.setPreferredSize(_OriginalDimension);
+	    getParent().doLayout();
+		revalidate();
+	    _Scale = 1;
 		repaint();
 	}
 
