@@ -22,6 +22,7 @@ public class Kiosk extends JFrame
 	//Private Class Members
 
 	private GraphicBoneYard _BoneYard = null;
+	private JScrollPane _ScrollYard = null;
 	private int _SliderValue = 0;
 
 	// Public Static variables
@@ -43,7 +44,28 @@ public class Kiosk extends JFrame
 
 		this.addKeyListener( new KeyAdapter()
 		{
-			@Override public void keyPressed(KeyEvent e) { if(e.getKeyCode() == KeyEvent.VK_ESCAPE) System.exit(0); }
+			@Override public void keyPressed(KeyEvent e) 
+			{ 
+			    if(e.getKeyCode() == KeyEvent.VK_ESCAPE) System.exit(0); 
+			    else
+			    {
+			        int incValue = 10;
+			        switch( e.getKeyCode() ) { 
+                        case (KeyEvent.VK_UP):
+                            _BoneYard.AdjustScrollWithArrows(0, -incValue);
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            _BoneYard.AdjustScrollWithArrows(0, incValue);
+                            break;
+                        case KeyEvent.VK_LEFT:
+                            _BoneYard.AdjustScrollWithArrows(-incValue, 0);
+                            break;
+                        case KeyEvent.VK_RIGHT :
+                            _BoneYard.AdjustScrollWithArrows(incValue, 0);
+                            break;
+                    }
+			    }
+			}
 		});
 
 		this.addMouseListener(new MouseAdapter()
@@ -147,12 +169,12 @@ public class Kiosk extends JFrame
 		JPanel right = new JPanel();
 		JPanel BoneYard = new JPanel();
 		_BoneYard = new GraphicBoneYard();
+		_ScrollYard = new JScrollPane(_BoneYard);
 		BorderLayout boneyardLayout = new BorderLayout();
-		JScrollPane scrollYard = new JScrollPane(_BoneYard);
 
-		scrollYard.setViewportView(_BoneYard);
-		scrollYard.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollYard.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		_ScrollYard.setViewportView(_BoneYard);
+		_ScrollYard.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		_ScrollYard.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		top.setMaximumSize(new Dimension(0,0));
 		left.setMaximumSize(new Dimension(0,0));
@@ -162,7 +184,7 @@ public class Kiosk extends JFrame
 		BoneYard.add(top, BorderLayout.NORTH);
 		BoneYard.add(left, BorderLayout.WEST);
 		BoneYard.add(right, BorderLayout.EAST);
-		BoneYard.add(scrollYard, BorderLayout.CENTER);
+		BoneYard.add(_ScrollYard, BorderLayout.CENTER);
 		BoneYard.add(CreateBottomOfScreenControls(), BorderLayout.SOUTH);
 
 		return BoneYard;
