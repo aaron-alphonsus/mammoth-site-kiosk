@@ -20,7 +20,6 @@ public class GraphicBoneYard extends JPanel
 	private Dimension _OriginalDimension = new Dimension(0,0);
 	private Dimension _CurrentDimension = new Dimension(0,0);
 	private ArrayList<Bone> _Bones = new ArrayList<>();
-	private Point2D.Double _VisibleCenter = null;
 	private Point2D.Double _WalkwayMin = null;
 	private Point2D.Double _WalkwayMax = null;
 	private Point _MousePosition = null;
@@ -30,9 +29,13 @@ public class GraphicBoneYard extends JPanel
 	private double _DeltaY = 0;
 	private double _XScale = 0;
 	private double _YScale = 0;
+<<<<<<< HEAD
+	private int _Scale = 1;
+=======
 	private double _Scale = 1;
 	private double _minElevation = 0.0;
 	private double _maxElevation = 0.0;
+>>>>>>> 8dd921b7ba8fbbdeec7dfe5240626538e1471d22
 
 	public GraphicBoneYard() {
 		super();
@@ -47,7 +50,14 @@ public class GraphicBoneYard extends JPanel
 
 			@Override public void mouseReleased(MouseEvent e) { _MousePosition = null; }
 			
-			@Override public void mouseClicked(MouseEvent e) { ((GraphicBoneYard)e.getSource()).FindClosestBone( new Point2D.Double(e.getX(), e.getY()) ); }
+			@Override public void mouseClicked(MouseEvent e) 
+			{ 
+			    if(e.getClickCount() == 2)
+			    {
+			        ZoomToPoint( new Point(e.getX(), e.getY()) );
+			    }
+			    else ((GraphicBoneYard)e.getSource()).FindClosestBone( new Point2D.Double(e.getX(), e.getY()) );
+			}
 		});
 
 		this.addMouseMotionListener(new MouseMotionAdapter()
@@ -81,8 +91,6 @@ public class GraphicBoneYard extends JPanel
         {
             _OriginalDimension = this.getSize();
             _CurrentDimension = this.getSize();
-            _VisibleCenter = new Point2D.Double(_CurrentDimension.getWidth()/2.0, _CurrentDimension.getHeight()/2.0);
-            System.out.println(_VisibleCenter);
             _FirstLoad = false;
         }
                
@@ -94,14 +102,10 @@ public class GraphicBoneYard extends JPanel
 
 	// Setters
 	public void setScale(int scale) {
-	
-	    if(scale > 0 && scale < _Scale)
-	    {
-	        UpdatePreferredSize(-1);
-	    }
-	    else if (scale > 0 && scale > _Scale)
-	    {
-	        UpdatePreferredSize(1);
+	    int newValue = scale + _Scale;
+	    if(newValue > 0){
+	        if(newValue < _Scale) UpdatePreferredSize(-1);
+	        else if (newValue > _Scale) UpdatePreferredSize(1);
 	    }
 	}
 
@@ -177,6 +181,15 @@ public class GraphicBoneYard extends JPanel
 		center.y += port.getHeight()/2;
 
 		return center;
+	}
+	
+	private void ZoomToPoint( Point p )
+	{
+	    JViewport port = (JViewport)this.getParent();
+		Rectangle visible = port.getViewRect();
+		
+        port.setViewPosition(new Point((int)(p.getX() - visible.getWidth()/2.0), (int)(p.getY() - visible.getHeight()/2.0) ));
+        UpdatePreferredSize(1);
 	}
     
     private void FindClosestBone(Point2D.Double p)
