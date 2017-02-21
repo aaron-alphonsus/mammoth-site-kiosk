@@ -161,12 +161,14 @@ public class GraphicBoneYard extends JPanel
 	    }
 	    else
 	    {
-	        centerX = visible.x + visible.getWidth()/2;
-	        centerY = visible.y + visible.getHeight()/2;
-	        Point2D.Double deScaledCenterPoint = new Point2D.Double(centerX * (2.0/_Scale), centerY * (2.0/_Scale));
+	        visible.x = (int)((visible.x / _Scale) * (_Scale + resize));
+		    visible.y = (int)((visible.y / _Scale) * (_Scale + resize));
+	        //centerX = visible.x + visible.getWidth()/2;
+	        //centerY = visible.y + visible.getHeight()/2;
+	        //Point2D.Double deScaledCenterPoint = new Point2D.Double(centerX * (2.0/_Scale), centerY * (2.0/_Scale));
 	        
-	        visible.x = (int)(centerX * (2.0/_Scale) - visible.getWidth()/2);
-	        visible.y = (int)(centerY * (2.0/_Scale) - visible.getHeight()/2);
+	        //visible.x = (int)(centerX * (2.0/_Scale) - visible.getWidth()/2);
+	        //visible.y = (int)(centerY * (2.0/_Scale) - visible.getHeight()/2);
 	    }	
 
         this.setPreferredSize(_CurrentDimension);
