@@ -148,37 +148,16 @@ public class GraphicBoneYard extends JPanel
 		_CurrentDimension.setSize((int)(_OriginalDimension.getWidth() * (_Scale + resize)), (int)(_OriginalDimension.getHeight() * (_Scale + resize)));
 		JViewport port = (JViewport)this.getParent();
 		Rectangle visible = port.getViewRect();
-		double centerX, centerY;
 		
-		if(resize > 0)
-		{
-		    //centerX = visible.x + _CurrentDimension.getWidth() / 2;
-		    //centerY = visible.y + _CurrentDimension.getHeight() / 2;
-		    visible.x = (int)((visible.x / _Scale) * (_Scale + resize));
-		    visible.y = (int)((visible.y / _Scale) * (_Scale + resize));
-		    //visible.x = (int)(centerX - visible.getWidth()/2);
-		    //visible.y = (int)(centerY - visible.getHeight()/2);
-	    }
-	    else
-	    {
-	        visible.x = (int)((visible.x / _Scale) * (_Scale + resize));
-		    visible.y = (int)((visible.y / _Scale) * (_Scale + resize));
-	        //centerX = visible.x + visible.getWidth()/2;
-	        //centerY = visible.y + visible.getHeight()/2;
-	        //Point2D.Double deScaledCenterPoint = new Point2D.Double(centerX * (2.0/_Scale), centerY * (2.0/_Scale));
-	        
-	        //visible.x = (int)(centerX * (2.0/_Scale) - visible.getWidth()/2);
-	        //visible.y = (int)(centerY * (2.0/_Scale) - visible.getHeight()/2);
-	    }	
+	    visible.x = (int)((visible.x / _Scale) * (_Scale + resize));
+		visible.y = (int)((visible.y / _Scale) * (_Scale + resize));
 
-        this.setPreferredSize(_CurrentDimension);
         port.setViewPosition(new Point(visible.x, visible.y));
-        //scrollRectToVisible(visible);
+        this.setPreferredSize(_CurrentDimension);
+		_Scale = _Scale + resize;
 		getParent().doLayout();
 		revalidate();
 		repaint();
-		
-		_Scale = _Scale + resize;
 	}
 
 	private Point getViewPortCenter() {
