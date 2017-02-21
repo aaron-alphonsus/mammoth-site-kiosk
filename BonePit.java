@@ -78,7 +78,7 @@ public class BonePit
 		for (int i = 1; i < bonerecs.getLength(); i++) {
 			Node bonerec = bonerecs.item(i);
 			NodeList children = bonerec.getChildNodes();
-			String id = "", taxon = "", completeness = "", remarks = "";
+			String id = "", taxon = "", completeness = "", remarks = "", gender = "UNDESIGNATED";
 			int year = 0, objectNum = 0;
 			double elevation = 0.0;
 
@@ -114,6 +114,9 @@ public class BonePit
 				else if (child.getNodeName().equals("remarks")) {
 					remarks = child.getTextContent().trim();
 				}
+				else if (child.getNodeName().equals("gender")) {
+					gender = child.getTextContent().trim();
+				}
 				else if (child.getNodeName().equals("elevation")) {
 					Scanner sc = new Scanner( child.getTextContent().trim() );
 					elevation = Double.parseDouble(sc.next());
@@ -133,7 +136,7 @@ public class BonePit
 			// try { System.in.read(); } catch (Exception e) { }
 
 			// Build a Bone Object and add it to our array
-			bones.add(new Bone(id, year, taxon, objectNum, completeness, remarks, elevation));
+			bones.add(new Bone(id, year, taxon, objectNum, completeness, gender, remarks, elevation));
 		}
 
 		// Return our list of bones
@@ -144,8 +147,13 @@ public class BonePit
 	public static void main( String[] args ) {
 		ArrayList<Bone> bones = BonePit.readBones();
 
-		// for (Bone bone : bones) {
-		// 	System.out.println(bone);
-		// }
+		Set<String> taxons = new HashSet<>();
+		for (Bone bone : bones) {
+			taxons.add(bone.taxon);
+		}
+
+		for (String s : taxons) {
+			System.out.println(s);
+		}
 	}
 }
