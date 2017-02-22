@@ -27,6 +27,8 @@ public class BonePit
 	private static double minElevation;
 	private static double maxElevation;
 
+	// I have these static methods so that the GraphicBoneYard can 
+	// get a difference in the minimum and maximum elevation
 	public static double getMinElevation( ) {
 		if (bones == null) {
 			readBones();
@@ -43,6 +45,8 @@ public class BonePit
 		return maxElevation;
 	}
 
+	// This is a static method to have the BonePit class read the XML files
+	// and return them as an ArrayList of Bone objects.  
 	public static ArrayList<Bone> readBones( )
 	{
 		// PseudoSingleton

@@ -94,7 +94,7 @@ public class Kiosk extends JFrame
 		content.add(right, BorderLayout.EAST);
 		content.add(bottom, BorderLayout.SOUTH);
 		content.add(menuBar, BorderLayout.NORTH);
-		content.add(CreateMainKioskScrollPane(), BorderLayout.WEST);
+		content.add(CreateFilterMenu(), BorderLayout.WEST);
 		content.add(CreateMainKioskBoneYardPanel(), BorderLayout.CENTER);
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -152,7 +152,7 @@ public class Kiosk extends JFrame
 	   Kiosk kiosk = new Kiosk();
 	}
 
-	private JPanel CreateMainKioskScrollPane()
+	private JPanel CreateFilterMenu()
 	{
 		JPanel filterMenu = new JPanel();
 

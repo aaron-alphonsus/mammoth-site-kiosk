@@ -28,6 +28,7 @@ public class Walkway
 	// Singleton stuff
 	private static Walkway ww;
 
+	// The walkway is a singleton object, so it's constructor is private
 	private Walkway()
 	{
 		super();
@@ -105,7 +106,8 @@ public class Walkway
 		}
 	}
 
-	// Singleton classes only have 1 public method
+	// Singleton classes have one public method so that people who need it
+	// can get a reference to the object
 	public static Walkway getWalkwayInstance()
 	{
 		// If the does not exist
