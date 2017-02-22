@@ -84,10 +84,8 @@ public class GraphicBoneYard extends JPanel
 
 				JViewport port = (JViewport)((JPanel)e.getSource()).getParent();
 				Rectangle visible = port.getViewRect();
-
 				visible.x -= x / (_Scale);
 				visible.y -= y / (_Scale);
-
 				scrollRectToVisible(visible);
 			}
 		});
@@ -137,6 +135,16 @@ public class GraphicBoneYard extends JPanel
 		revalidate();
 	    _Scale = 1;
 		repaint();
+	}
+	
+	public void AdjustScrollWithArrows(int x, int y)
+	{
+	    JViewport port = (JViewport)this.getParent();
+		Rectangle visible = port.getViewRect();
+
+        visible.x += x * (_Scale);
+        visible.y += y * (_Scale);
+		scrollRectToVisible(visible);
 	}
 
 	// Setters for filters
@@ -302,7 +310,7 @@ public class GraphicBoneYard extends JPanel
 	    
     	for(Bone bone : _Bones)
     	{
-            if(bone.xMin != null && bone.xMax != null && bone.yMin != null && bone.yMax != null)
+            if( bone.isVisible && bone.xMin != null && bone.xMax != null && bone.yMin != null && bone.yMax != null)
             {
     	        if(p.getX() <= (bone.xMax - _WalkwayMin.getX()) * _XScale
     	         && p.getX() >= (bone.xMin - _WalkwayMin.getX()) * _XScale
