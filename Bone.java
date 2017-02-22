@@ -22,6 +22,9 @@ import javax.swing.*;
 public class Bone
 {
 	// Bone info
+	// I'm leaving these public because using getters and setters
+	// on private variables incurs three stack pushes each, which
+	// isn't worth the performance dip to me
 	public String id;
 	public int year;
 	public String taxon;
@@ -81,8 +84,12 @@ public class Bone
 			root = document.getDocumentElement();
 		} catch (Exception e) {
 			// System.out.println( e.toString() );
+			// This is the exception that occurs when the XML file 
+			// doesn't exist
 		}
 
+		// If there was an error reading the document, root gets
+		// set to null.  We just retun an empty object
 		if (root == null) {
 			return;
 		}
