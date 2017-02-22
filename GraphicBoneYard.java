@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-//package kiosk;
+//Imports
 
 import java.awt.*;
 import java.awt.event.*;
@@ -11,12 +6,21 @@ import java.awt.geom.*;
 import javax.swing.*;
 import java.util.*;
 
-/**
+//End Imports
+
+/** GraphicBoneYard Class
+ * <p>
+ * Class that the polylines from bonexml are drawn to. This class inherits 
+ * from JPanel, and handles all of the Drawing, Resizing, and Movements
+ * performed on it.
  *
- * @author Brady Shimp and Elliott Rarden
+ * @author Brady Shimp, Elliott Rarden
+ * @version 1
  */
 public class GraphicBoneYard extends JPanel
 {
+// Private Class Members
+
 	private Dimension _OriginalDimension = new Dimension(0,0);
 	private Dimension _CurrentDimension = new Dimension(0,0);
 	private ArrayList<Bone> _Bones = new ArrayList<>();
@@ -33,7 +37,7 @@ public class GraphicBoneYard extends JPanel
 	private double _minElevation = 0.0;
 	private double _maxElevation = 0.0;
 
-	// Wether or not to draw thinsg
+	// Wether or not to draw things
 	private boolean _drawMale = true;
 	private boolean _drawFemale = true;
 	private boolean _drawColumbi = true;
@@ -41,40 +45,55 @@ public class GraphicBoneYard extends JPanel
 	private boolean _drawUnidentifiedMammoth = true;
 	private boolean _drawUnidentified = true;
 	private boolean _drawUndesignated = true;
+	
+// End Private Class Members
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+// Public Class Methods
+
+    /** GraphicBoneYard Constructor
+    *
+    * The constructor sets default values, adds Mouse Event Listeners, and <br>
+    * makes the call to the BonePit class to parse the bonexml folder for <br>
+    * all bonexml data
+    */
 	public GraphicBoneYard() {
 		super();
+		
+		// get all bonexml data
 		_Bones = BonePit.readBones();
 		_minElevation = BonePit.getMinElevation();
 		_maxElevation = BonePit.getMaxElevation();
 		this.setDoubleBuffered(true);
 
 		this.addMouseListener(new MouseAdapter()
-		{
+		{                                                    //track position of mouse press for Panning
 			@Override public void mousePressed(MouseEvent e) { _MousePosition = new Point(e.getX(), e.getY()); }
-
+                                                             //untrack mouse position, done Panning
 			@Override public void mouseReleased(MouseEvent e) { _MousePosition = null; }
-			
+		
 			@Override public void mouseClicked(MouseEvent e) 
 			{ 
 			    if(SwingUtilities.isLeftMouseButton(e)){
 			        java.util.Timer singleClick = new java.util.Timer();
 			        
 			        singleClick.schedule(new TimerTask(){    
-			            @Override public void run(){
-			                if(e.getClickCount() == 1){
+			            @Override public void run(){        //Single click if only clicked once withing 375 milliseconds
+			                if(e.getClickCount() == 1){         //on single click try to open pop-up for nearest bone
 			                    ((GraphicBoneYard)e.getSource()).FindClosestBone( new Point2D.Double(e.getX(), e.getY()) );
 			                }
 			            }
 			        }, 375);
 			        
-			        if(e.getClickCount() == 2){
+			        if(e.getClickCount() == 2){             //otherwise double click, zoom to mouse click point
 			            ZoomToPoint( new Point(e.getX(), e.getY()) );
 			        }
 			    }
 			}
 		});
-
+                                    //Dragging while mouse pressed to scroll screen
 		this.addMouseMotionListener(new MouseMotionAdapter()
 		{
 			@Override public void mouseDragged(MouseEvent e)
@@ -91,13 +110,24 @@ public class GraphicBoneYard extends JPanel
 		});
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
+    /** getPreferredSize
+    * <p>
+    * Overloaded version of the JPanel getPreferredSize.
+    *
+    * @return _CurrentDimension, a private variable of type Dimension that
+    *         tracks the frame size with a scaling factor applied
+    */
+	@Override public Dimension getPreferredSize() {
 		return _CurrentDimension;
 	}
 
-	@Override
-	public void paintComponent(Graphics g) {
+    /** paintComponent
+    * <p>
+    * Overloaded paintComponent method, performs the draw for all the 
+    * polylines that represent the bones at Mammoth Site.
+    * 
+    */
+	@Override public void paintComponent(Graphics g) {
 		super.paintComponent( g );
 
 		if(_FirstLoad)
@@ -113,7 +143,14 @@ public class GraphicBoneYard extends JPanel
         revalidate();
     }
 
-	// Setters
+	/** setScale
+	* <p>
+	* A gateway method for resizing this JPanel. The method guarantees the
+	* validity of the new scaling value before calling the method that will
+	* actually alter the Panels dimensions.
+	*
+	* @param scale      The value to alter the current scaling factor by.
+	*/
 	public void setScale(int scale) {
 	    int newValue = scale + _Scale;
 	    if(newValue > 0){
@@ -122,16 +159,29 @@ public class GraphicBoneYard extends JPanel
 	    }
 	}
 
+    /** setSliderValue
+    * <p>
+    * A method that allows external adjustment of the JSlider in the toolbar.
+    *
+    * @param val        The value to be the new JSlider value
+    */
 	public void setSliderValue(int val) {
 		this.sliderValue = val;
 		repaint();
 	}
 	
+	/** Reset
+	*<p>
+	*
+	*
+	*
+	*/
 	public void Reset()
 	{
 	    _CurrentDimension.setSize(_OriginalDimension.getWidth(), _OriginalDimension.getHeight());
 	    this.setPreferredSize(_OriginalDimension);
 	    getParent().doLayout();
+	    setSliderValue(5);
 		revalidate();
 	    _Scale = 1;
 		repaint();
@@ -182,8 +232,12 @@ public class GraphicBoneYard extends JPanel
 	    this._drawUnidentified = _drawUnidentified;
 	    repaint();
 	}
+// End Public Class Methods
 
-	// Priavte methods
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+// Priavte Class Methods
 
 	private void Draw(Graphics2D graph) {
 		double topMargin = 5;
@@ -342,4 +396,5 @@ public class GraphicBoneYard extends JPanel
     	double distance = (a.getX() - b.getX()) * (a.getX() - b.getX());
 	    return distance += (a.getY() - b.getY()) * (a.getY() - b.getY());
     }
+// End Private Class Methods
 }

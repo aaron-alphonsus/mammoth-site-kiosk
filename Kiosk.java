@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-//package kiosk;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -23,6 +22,7 @@ public class Kiosk extends JFrame
 
 	private GraphicBoneYard _BoneYard = null;
 	private JScrollPane _ScrollYard = null;
+	private JSlider _Slider = null;
 	private int _SliderValue = 0;
 
 	// Public Static variables
@@ -288,9 +288,9 @@ public class Kiosk extends JFrame
 	private void SetSliderControl(JToolBar toolBar)
 	{
 		JPanel sliderPanel = new JPanel();
-		JSlider slider = new JSlider();
+		_Slider = new JSlider();
 
-		slider.addChangeListener((ChangeEvent e) ->
+		_Slider.addChangeListener((ChangeEvent e) ->
 		{
 			//From: http://docs.oracle.com/javase/tutorial/uiswing/events/changelistener.html
 			JSlider source = (JSlider)e.getSource();
@@ -302,22 +302,22 @@ public class Kiosk extends JFrame
 			}
 		});
 
-		slider.setMinimum(1);
-		slider.setMaximum(5);
+		_Slider.setMinimum(1);
+		_Slider.setMaximum(5);
 
-		slider.setMajorTickSpacing(1);
-		slider.setMinorTickSpacing(1);
+		_Slider.setMajorTickSpacing(1);
+		_Slider.setMinorTickSpacing(1);
 
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
-		slider.setSnapToTicks(true);
+		_Slider.setPaintTicks(true);
+		_Slider.setPaintLabels(true);
+		_Slider.setSnapToTicks(true);
 
         JLabel sliderLabel = new JLabel("Elevation: ");
 		//sliderPanel.setLayout(new GridLayout(2, 1));
 		sliderPanel.setPreferredSize(new Dimension(150, 75));
 		sliderLabel.setAlignmentX(JLabel.CENTER);
 		sliderPanel.add(sliderLabel);
-		sliderPanel.add(slider);
+		sliderPanel.add(_Slider);
 		
 		toolBar.add(sliderPanel);
 	}
@@ -361,6 +361,7 @@ public class Kiosk extends JFrame
 	    
 	    reset.addActionListener((ActionEvent e) ->{
 	            _BoneYard.Reset();
+	            _Slider.setValue(5);
 	            ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
 	    });
 	    
