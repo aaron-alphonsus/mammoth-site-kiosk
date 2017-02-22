@@ -282,6 +282,7 @@ public class Kiosk extends JFrame{
 		BorderLayout boneyardLayout = new BorderLayout();
 
 		_ScrollYard.setViewportView(_BoneYard);
+		_ScrollYard.setWheelScrollingEnabled(false);
 		_ScrollYard.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		_ScrollYard.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
