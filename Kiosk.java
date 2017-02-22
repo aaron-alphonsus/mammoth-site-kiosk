@@ -312,7 +312,8 @@ public class Kiosk extends JFrame{
 		kioskControls.setLayout(new FlowLayout());
         
         //fill toolbar with components
-		SetSliderControl(toolBar);
+        SetDetailSlidercontrol(toolBar);
+		SetElevationSliderControl(toolBar);
 		SetZoomControls(toolBar);
 		SetResetControl(toolBar);
 		SetHelpControl(toolBar);
@@ -331,7 +332,7 @@ public class Kiosk extends JFrame{
     *
     * @param toolBar        The JToolBar to place this control on
     */
-	private void SetSliderControl(JToolBar toolBar){
+	private void SetElevationSliderControl(JToolBar toolBar){
 		JPanel sliderPanel = new JPanel();
 		_Slider = new JSlider();
 
@@ -341,7 +342,7 @@ public class Kiosk extends JFrame{
 			JSlider source = (JSlider)e.getSource();
 			if(!source.getValueIsAdjusting()){
 				_SliderValue = source.getValue();
-				_BoneYard.setSliderValue(_SliderValue);
+				_BoneYard.setElevSliderValue(_SliderValue);
 				source.transferFocusBackward(); //set focus back to JFrame
 			}
 		});
@@ -356,9 +357,54 @@ public class Kiosk extends JFrame{
 		_Slider.setPaintLabels(true);
 		_Slider.setSnapToTicks(true);
 
+		_Slider.setPreferredSize(new Dimension(300, 50));
+
         JLabel sliderLabel = new JLabel("Elevation:");
         // sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.Y_AXIS));
-		sliderPanel.setPreferredSize(new Dimension(250, 75));
+		sliderPanel.setPreferredSize(new Dimension(350, 75));
+		sliderLabel.setAlignmentX(JLabel.CENTER);
+		sliderPanel.add(sliderLabel);
+		sliderPanel.add(_Slider);
+		
+		toolBar.add(sliderPanel);
+	}
+
+	/**
+    * <p>
+    * Creates the JSlider control to add to the JToolBar
+    *
+    * @param toolBar        The JToolBar to place this control on
+    */
+	private void SetDetailSlidercontrol(JToolBar toolBar){
+		JPanel sliderPanel = new JPanel();
+		_Slider = new JSlider();
+
+        //event to track changes to the sliders value
+		_Slider.addChangeListener((ChangeEvent e) -> {
+			//From: http://docs.oracle.com/javase/tutorial/uiswing/events/changelistener.html
+			JSlider source = (JSlider)e.getSource();
+			if(!source.getValueIsAdjusting()){
+				_SliderValue = source.getValue();
+				_BoneYard.setDetailSliderValue(_SliderValue);
+				source.transferFocusBackward(); //set focus back to JFrame
+			}
+		});
+
+		_Slider.setMinimum(1);
+		_Slider.setMaximum(5);
+
+		_Slider.setMajorTickSpacing(1);
+		_Slider.setMinorTickSpacing(1);
+
+		_Slider.setPaintTicks(true);
+		_Slider.setPaintLabels(true);
+		_Slider.setSnapToTicks(true);
+
+		_Slider.setPreferredSize(new Dimension(300, 50));
+
+        JLabel sliderLabel = new JLabel("Level of Detail:");
+        // sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.Y_AXIS));
+		sliderPanel.setPreferredSize(new Dimension(350, 75));
 		sliderLabel.setAlignmentX(JLabel.CENTER);
 		sliderPanel.add(sliderLabel);
 		sliderPanel.add(_Slider);
@@ -457,17 +503,7 @@ public class Kiosk extends JFrame{
 	    
 	    return legendPanel;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	/**
 	* <p>

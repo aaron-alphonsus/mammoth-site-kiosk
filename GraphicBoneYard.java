@@ -28,7 +28,8 @@ public class GraphicBoneYard extends JPanel
 	private Point2D.Double _WalkwayMax = null;
 	private Point _MousePosition = null;
 	private boolean _FirstLoad = true;
-	private int sliderValue = 5;
+	private int elevSliderVal = 5;
+	private int detailSliderVal = 15;
 	private double _DeltaX = 0;
 	private double _DeltaY = 0;
 	private double _XScale = 0;
@@ -165,8 +166,19 @@ public class GraphicBoneYard extends JPanel
     *
     * @param val        The value to be the new JSlider value
     */
-	public void setSliderValue(int val) {
-		this.sliderValue = val;
+	public void setElevSliderValue(int val) {
+		this.elevSliderVal = val;
+		repaint();
+	}
+
+	/**
+    * <p>
+    * A method that allows external adjustment of the JSlider in the toolbar.
+    *
+    * @param val        The value to be the new JSlider value
+    */
+	public void setDetailSliderValue(int val) {
+		this.detailSliderVal = val;
 		repaint();
 	}
 
@@ -179,7 +191,8 @@ public class GraphicBoneYard extends JPanel
 	    _CurrentDimension.setSize(_OriginalDimension.getWidth(), _OriginalDimension.getHeight());
 	    this.setPreferredSize(_OriginalDimension);
 	    getParent().doLayout();
-	    setSliderValue(5);
+	    setElevSliderValue(5);
+	    setDetailSliderValue(15);
 		revalidate();
 	    _Scale = 1;
 		repaint();
@@ -330,7 +343,7 @@ public class GraphicBoneYard extends JPanel
 		{
 			// The slider value enables/disables bones based on an elevation threshhold
 			double elev = bone.elevation;
-			double threshhold = (((_maxElevation - _minElevation) / 5) * (sliderValue) + 1) + _minElevation;
+			double threshhold = (((_maxElevation - _minElevation) / 5) * (elevSliderVal) + 1) + _minElevation;
 
 			// Decide if we need to draw this bone based on filters
 			boolean drawGender = false;
@@ -355,7 +368,7 @@ public class GraphicBoneYard extends JPanel
 
 			// A bone isn't visible until it's drawn
 			bone.isVisible = false;
-			if (bone.elevation <= threshhold && drawTaxon && drawGender)
+			if (bone.elevation <= threshhold && drawTaxon && drawGender && bone.detail <= (detailSliderVal * 3))
 			{
 				bone.isVisible = true;
 

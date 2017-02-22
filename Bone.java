@@ -34,6 +34,7 @@ public class Bone
 	public int year;
 	public String taxon;
 	public int objectNum;
+	public int detail;
 	public String completeness;
 	public String gender;
 	public String remarks;
@@ -52,19 +53,21 @@ public class Bone
 	 * @param year 			The year the bone was found
 	 * @param taxon 		The taxonomy of the bone
 	 * @param objectNum 	The object number of the bone
+	 * @param detail		The "level of detail" of a bone
 	 * @param completeness 	The bone's completeness grade
 	 * @param gender 		The gender of the bone
 	 * @param remarks 		Any remarks from the archeologists
 	 * @param elevation 	The elevation of the bone at the site
 	 * @return A new bone object reference
 	 */
-	public Bone(String id, int year, String taxon, int objectNum, String completeness, String gender, String remarks, double elevation) {
+	public Bone(String id, int year, String taxon, int objectNum, int detail, String completeness, String gender, String remarks, double elevation) {
 
 		// Put in all the stuff given to us
 		this.id = id;
 		this.year = year;
 		this.taxon = taxon;
 		this.objectNum = objectNum;
+		this.detail = detail;
 		this.completeness = completeness;
 		this.gender = gender;
 		this.remarks = remarks;

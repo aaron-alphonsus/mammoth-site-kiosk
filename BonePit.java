@@ -94,7 +94,7 @@ public class BonePit {
 			Node bonerec = bonerecs.item(i);
 			NodeList children = bonerec.getChildNodes();
 			String id = "", taxon = "", completeness = "", remarks = "", gender = "UNDESIGNATED";
-			int year = 0, objectNum = 0;
+			int year = 0, objectNum = 0, element = 0;
 			double elevation = 0.0;
 
 			// For some reason, it reads "null" nodes in between each actual
@@ -141,6 +141,10 @@ public class BonePit {
 						maxElevation = elevation;
 					}
 				}
+				else if (child.getNodeName().equals("element")) {
+					Scanner sc = new Scanner( child.getTextContent().trim() );
+					element = Integer.parseInt(sc.next());
+				}
 			}
 
 			// Debug output
@@ -151,7 +155,7 @@ public class BonePit {
 			// try { System.in.read(); } catch (Exception e) { }
 
 			// Build a Bone Object and add it to our array
-			bones.add(new Bone(id, year, taxon, objectNum, completeness, gender, remarks, elevation));
+			bones.add(new Bone(id, year, taxon, objectNum, element, completeness, gender, remarks, elevation));
 		}
 
 		// Return our list of bones
@@ -160,15 +164,15 @@ public class BonePit {
 
 	// main function for testing this class
 	public static void main( String[] args ) {
-		// ArrayList<Bone> bones = BonePit.readBones();
+		ArrayList<Bone> bones = BonePit.readBones();
 
-		// Set<String> taxons = new HashSet<>();
-		// for (Bone bone : bones) {
-		// 	taxons.add(bone.taxon);
-		// }
+		Set<Integer> details = new HashSet<>();
+		for (Bone bone : bones) {
+			details.add(bone.detail);
+		}
 
-		// for (String s : taxons) {
-		// 	System.out.println(s);
-		// }
+		for (Integer s : details) {
+			System.out.println(s);
+		}
 	}
 }
