@@ -45,7 +45,7 @@ public class GraphicBoneYard extends JPanel
 	private boolean _drawUnidentifiedMammoth = true;
 	private boolean _drawUnidentified = true;
 	private boolean _drawUndesignated = true;
-	
+
 // End Private Class Members
 
 //-----------------------------------------------------------------------------
@@ -55,13 +55,13 @@ public class GraphicBoneYard extends JPanel
 
     /**
     * <p>
-    * The constructor sets default values, adds Mouse Event Listeners, and 
-    * makes the call to the BonePit class to parse the bonexml folder for 
+    * The constructor sets default values, adds Mouse Event Listeners, and
+    * makes the call to the BonePit class to parse the bonexml folder for
     * all bonexml data
     */
 	public GraphicBoneYard() {
 		super();
-		
+
 		// get all bonexml data
 		_Bones = BonePit.readBones();
 		_minElevation = BonePit.getMinElevation();
@@ -73,20 +73,20 @@ public class GraphicBoneYard extends JPanel
 			@Override public void mousePressed(MouseEvent e) { _MousePosition = new Point(e.getX(), e.getY()); }
                                                              //untrack mouse position, done Panning
 			@Override public void mouseReleased(MouseEvent e) { _MousePosition = null; }
-		
-			@Override public void mouseClicked(MouseEvent e) 
-			{ 
+
+			@Override public void mouseClicked(MouseEvent e)
+			{
 			    if(SwingUtilities.isLeftMouseButton(e)){
 			        java.util.Timer singleClick = new java.util.Timer();
-			        
-			        singleClick.schedule(new TimerTask(){    
+
+			        singleClick.schedule(new TimerTask(){
 			            @Override public void run(){        //Single click if only clicked once withing 375 milliseconds
 			                if(e.getClickCount() == 1){         //on single click try to open pop-up for nearest bone
 			                    ((GraphicBoneYard)e.getSource()).FindClosestBone( new Point2D.Double(e.getX(), e.getY()) );
 			                }
 			            }
 			        }, 375);
-			        
+
 			        if(e.getClickCount() == 2){             //otherwise double click, zoom to mouse click point
 			            ZoomToPoint( new Point(e.getX(), e.getY()) );
 			        }
@@ -123,9 +123,9 @@ public class GraphicBoneYard extends JPanel
 
     /**
     * <p>
-    * Overriden paintComponent method, performs the draw for all the 
+    * Overriden paintComponent method, performs the draw for all the
     * polylines that represent the bones at Mammoth Site.
-    * 
+    *
     */
 	@Override public void paintComponent(Graphics g) {
 		super.paintComponent( g );
@@ -136,7 +136,7 @@ public class GraphicBoneYard extends JPanel
             _CurrentDimension = this.getSize();
             _FirstLoad = false;
         }
-               
+
         Graphics2D graph = (Graphics2D)g;
         Draw(graph);
         graph.dispose();
@@ -169,7 +169,7 @@ public class GraphicBoneYard extends JPanel
 		this.sliderValue = val;
 		repaint();
 	}
-	
+
 	/**
 	* <p>
 	* A method to restore the view to it's original state.
@@ -184,7 +184,7 @@ public class GraphicBoneYard extends JPanel
 	    _Scale = 1;
 		repaint();
 	}
-	
+
 	/**
 	* <p>
 	* A method to take integer values and shift the current view
@@ -204,7 +204,7 @@ public class GraphicBoneYard extends JPanel
 	}
 
 	// Setters for filters
-	
+
 	/**
 	* <p>
 	* A setter property for the Draw Male filter option.
@@ -245,7 +245,7 @@ public class GraphicBoneYard extends JPanel
 	* <p>
 	* A setter property for the Draw Columbi filter option.
 	*
-	* @param _drawColumbi      boolean to determine whether or not to draw 
+	* @param _drawColumbi      boolean to determine whether or not to draw
 	*                          Columbi bones
 	*/
 	public void setDrawColumbi(boolean _drawColumbi) {
@@ -257,7 +257,7 @@ public class GraphicBoneYard extends JPanel
 	* <p>
 	* A setter property for the Draw Primigenius filter option.
 	*
-	* @param _drawPrimigenius      boolean to determine whether or not 
+	* @param _drawPrimigenius      boolean to determine whether or not
 	*                              to draw Primigenius bones
 	*/
 	public void setDrawPrimigenius(boolean _drawPrimigenius) {
@@ -269,7 +269,7 @@ public class GraphicBoneYard extends JPanel
 	* <p>
 	* A setter property for the Draw Unidentified Mammoth filter option.
 	*
-	* @param _drawUnidentifiedMammoth      boolean to determine whether or 
+	* @param _drawUnidentifiedMammoth      boolean to determine whether or
 	*                                      not to draw Unidentified Mammoth bones
 	*/
 	public void setDrawUnidentifiedMammoth(boolean _drawUnidentifiedMammoth) {
@@ -281,7 +281,7 @@ public class GraphicBoneYard extends JPanel
 	* <p>
 	* A setter property for the Draw Unidentified filter option.
 	*
-	* @param _drawUnidentified      boolean to determine whether or not to 
+	* @param _drawUnidentified      boolean to determine whether or not to
 	*                               draw Unidentified bones
 	*/
 	public void setDrawUnidentified(boolean _drawUnidentified) {
@@ -297,7 +297,7 @@ public class GraphicBoneYard extends JPanel
 
     /**
     * <p>
-    * A helper method for paintComponent. Given the Graphics2D Object from 
+    * A helper method for paintComponent. Given the Graphics2D Object from
     * paintComponent, this method draws the walkway and all bones that meet
     * the current filtering criteria with the current scaling factor.
     *
@@ -394,7 +394,7 @@ public class GraphicBoneYard extends JPanel
 		_CurrentDimension.setSize((int)(_OriginalDimension.getWidth() * (_Scale + resize)), (int)(_OriginalDimension.getHeight() * (_Scale + resize)));
 		JViewport port = (JViewport)this.getParent();
 		Rectangle visible = port.getViewRect();
-		
+
 	    visible.x = (int)((visible.x / _Scale) * (_Scale + resize));
 		visible.y = (int)((visible.y / _Scale) * (_Scale + resize));
 
@@ -409,7 +409,7 @@ public class GraphicBoneYard extends JPanel
     /**
     * <p>
     * Given an input point, the point will become the new view center for
-    * applying an increased scaling factor. 
+    * applying an increased scaling factor.
     *
     * @param p      The point as the new view center
     */
@@ -417,11 +417,11 @@ public class GraphicBoneYard extends JPanel
 	{
 	    JViewport port = (JViewport)this.getParent();
 		Rectangle visible = port.getViewRect();
-		
+
         port.setViewPosition(new Point((int)(p.getX() - visible.getWidth()/2.0), (int)(p.getY() - visible.getHeight()/2.0) ));
         UpdatePreferredSize(1);
 	}
-    
+
     /**
     * <p>
     * Given a point on the screen, the point is compared to every bone drawing
@@ -435,24 +435,27 @@ public class GraphicBoneYard extends JPanel
     {
     	boolean closer = false;
     	boolean anyBone = false;
-    	Bone closestBone = new Bone();
+    	Bone closestBone = null;
     	Point2D.Double boneCenter = new Point2D.Double(0,0);
 	    Point2D.Double closestCenter = new Point2D.Double(0,0);
-	    
+
     	for(Bone bone : _Bones)
     	{
             if( bone.isVisible && bone.xMin != null && bone.xMax != null && bone.yMin != null && bone.yMax != null)
             {
     	        if(p.getX() <= (bone.xMax - _WalkwayMin.getX()) * _XScale
     	         && p.getX() >= (bone.xMin - _WalkwayMin.getX()) * _XScale
-    	         && p.getY() >= (_WalkwayMax.getY() - bone.yMax) * _YScale 
+    	         && p.getY() >= (_WalkwayMax.getY() - bone.yMax) * _YScale
     	         && p.getY() <= (_WalkwayMax.getY() - bone.yMin) * _YScale)
     	        {
     	            boneCenter = new Point2D.Double(bone.xMax/2.0, bone.yMax/2.0);
-    	    	
-    	    	    if(closestBone == null) closer = true;
-    	    	    else if( DistanceFormula(p, boneCenter) < DistanceFormula(p, closestCenter) ) closer = true;    		
-    		
+
+    	    	    if(closestBone == null) {
+    	    	    	closer = true;
+    	    	    } else if( DistanceFormula(p, boneCenter) < DistanceFormula(p, closestCenter) ) {
+    	    	    	closer = true;
+    	    	    }
+
     		        if(closer)
     		        {
     		            anyBone = true;
@@ -463,11 +466,11 @@ public class GraphicBoneYard extends JPanel
     		    }
             }
     	}
-    	
+
         if(anyBone)
-            ImageDisplay.DisplayBone(closestBone);	
+            ImageDisplay.DisplayBone(closestBone);
     }
-    
+
     /**
     * <p>
     * The standard formula to compute distance between two 2-dimensional points

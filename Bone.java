@@ -19,6 +19,9 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import javax.swing.*;
 
+/**
+ * The bone class holds all metadata and drawing information for a bone object
+ */
 public class Bone
 {
 	// Bone info
@@ -35,18 +38,24 @@ public class Bone
 	public double elevation;
 
 	// Drawing info
-	// private int nShapes;
-	// private int nVerticies;
 	public Double xMin, xMax, yMin, yMax;
 	public ArrayList<ArrayList<Point2D.Double>> polylines = new ArrayList<ArrayList<Point2D.Double>>();
 	public Boolean isVisible;
 
-	// DONT USE THIS CONSTRUCTOR
-	public Bone() {
-		super();
-	}
-
-	// USE THIS CONSTRUCTOR
+	/**
+	 * This is the constructor for the bone class.  This constructor creates a bone object with the given
+	 * metadata, and then uses the ID to parse the xml file with that ID.
+	 * 
+	 * @param id 			The BoneID.  This will be used to load the bone data from the XML file
+	 * @param year 			The year the bone was found
+	 * @param taxon 		The taxonomy of the bone
+	 * @param objectNum 	The object number of the bone
+	 * @param completeness 	The bone's completeness grade
+	 * @param gender 		The gender of the bone
+	 * @param remarks 		Any remarks from the archeologists
+	 * @param elevation 	The elevation of the bone at the site
+	 * @return A new bone object reference
+	 */
 	public Bone(String id, int year, String taxon, int objectNum, String completeness, String gender, String remarks, double elevation) {
 
 		// Put in all the stuff given to us
@@ -61,19 +70,21 @@ public class Bone
 
 		// Parse the bone-specific xml file
 		this.parseXML();
-
-		// Debug output
-		// System.out.println(this);
 	}
 
-	// toString method for debug output
+	/**
+	 * @return A string with debug information about the bone
+	 */
 	public String toString() {
 		return "Bone Object " + id + "\n         year = " + year + "\n        taxon = " + taxon + "\n    objectNum = " + objectNum + "\n completeness = " + completeness + "\n      remarks = " + remarks + "\n    elevation = " + elevation + "\n   xMin, yMin = (" + xMin + ", " + yMin + ")\n   xMax, yMax = (" + xMax + ", " + yMax + ")\n";
 
 	}
 
-	// Fetching drawing info from XML files
-	// Thanks Dr. Weiss for the bulk of this function!
+	/**
+	 * This function finds, opens, and parses the XML file for the bone.  It
+	 * then extracts all polyline information regarding the bone.  Thanks to
+	 * Dr. Weiss for the sample XML reading files!
+	 */
 	void parseXML() {
 		// Get our root node
 		Element root = null;

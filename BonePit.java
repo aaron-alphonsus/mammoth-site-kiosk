@@ -2,9 +2,6 @@
 
 	**** BonePit.java ****
 
-This file will read the bonexml file and return an array list of bone
-objects for other people to use as necessary.
-
 References: This file is a adapted from Dr. John Weiss' XMLplot2.java code
 
 Author: Elliott Rarden
@@ -21,14 +18,20 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import javax.swing.*;
 
-public class BonePit
-{
+/**
+ * The BonePit class is a "static class" in that it only has static methods.  
+ * It class will parse the XML bones.xml file and create a list of BoneObjects,
+ * as well as hold any metadata about the bonepit at the mammoth site, such as
+ * the maximum and minimum elevation of a bone.
+ */
+public class BonePit {
 	private static ArrayList<Bone> bones = null;
 	private static double minElevation;
 	private static double maxElevation;
 
-	// I have these static methods so that the GraphicBoneYard can 
-	// get a difference in the minimum and maximum elevation
+	/**
+	 * @return The minimum elevation in the bone set
+	 */
 	public static double getMinElevation( ) {
 		if (bones == null) {
 			readBones();
@@ -37,6 +40,9 @@ public class BonePit
 		return minElevation;
 	}
 
+	/**
+	 * @return The maximum elevation in the bone set
+	 */
 	public static double getMaxElevation( ) {
 		if (bones == null) {
 			readBones();
@@ -45,8 +51,11 @@ public class BonePit
 		return maxElevation;
 	}
 
-	// This is a static method to have the BonePit class read the XML files
-	// and return them as an ArrayList of Bone objects.  
+	/**
+	 * @brief This is a static method to have the BonePit class read the XML files and return them as an ArrayList of Bone objects.
+	 * 
+	 * @return An ArrayList of Bone objects
+	 */
 	public static ArrayList<Bone> readBones( )
 	{
 		// PseudoSingleton
@@ -147,17 +156,17 @@ public class BonePit
 		return bones;
 	}
 
-	// main function
+	// main function for testing this class
 	public static void main( String[] args ) {
-		ArrayList<Bone> bones = BonePit.readBones();
+		// ArrayList<Bone> bones = BonePit.readBones();
 
-		Set<String> taxons = new HashSet<>();
-		for (Bone bone : bones) {
-			taxons.add(bone.taxon);
-		}
+		// Set<String> taxons = new HashSet<>();
+		// for (Bone bone : bones) {
+		// 	taxons.add(bone.taxon);
+		// }
 
-		for (String s : taxons) {
-			System.out.println(s);
-		}
+		// for (String s : taxons) {
+		// 	System.out.println(s);
+		// }
 	}
 }
