@@ -10,10 +10,9 @@ Author: John M. Weiss, Ph.D.
 Class:  CSC468 GUI Programming
 Date:   Spring 2017
 
-TODO:   Right-align descriptions
-        javadoc
-
 */
+
+// Imports
 
 import java.awt.event.*;
 import java.awt.BorderLayout;
@@ -23,9 +22,26 @@ import javax.swing.*;
 import java.util.*;
 import java.io.File;
 
+// End Imports
+
+/**
+ * <p>
+ * This class inherits from JFrame, and creates a pop-up to display the bone image and details about the bone.
+ *
+ * @author Aaron Alphonsus
+ * @version 1
+ */
 public class ImageDisplay extends JFrame
-{   
-    // constructor: filename is image file
+{
+    /**
+     * <p>
+     * Constructor for the pop-up window. Creates three components (details, image and remarks) and adds it to a
+     * BorderLayout in the pop-up content pane. Implements a KeyListener to exit when Esc is pressed.
+     *
+     * @param boneImage     Filepath to the image that needs to be displayed
+     * @param bone          Bone object whose details are displayed
+     *
+     */
     public ImageDisplay(String boneImage, Bone bone)
     {  
         // call JFrame constructor with filename in title bar
@@ -53,8 +69,7 @@ public class ImageDisplay extends JFrame
         String[] properties = CreatePropertiesArray(bone);
         
         /*
-        Creates the 'details' panel which has following fields:
-        id, year, taxon, objectNum, completeness, elevation
+            Creates the 'details' panel which has fields: id, year, taxon, objectNum, completeness, elevation.
         */
         JPanel details = new JPanel();
         details.setLayout( new BoxLayout(details, BoxLayout.Y_AXIS));
@@ -62,12 +77,11 @@ public class ImageDisplay extends JFrame
         for (int i = 0; i < labels.length; i++)
             AddComponent(details, labels[i], properties[i]);
         
-        
         // add JLabel with image to the content pane
         JLabel image = new JLabel(new ImageIcon(boneImage));
         getContentPane().add(image, BorderLayout.CENTER );
         
-        // Creates the remarks panel.
+        // Creates the remarks panel and adds it to PAGE_END of content pane
         JPanel remarks = new JPanel();
         remarks.setLayout(new BoxLayout(remarks, BoxLayout.X_AXIS));
         getContentPane().add(remarks, BorderLayout.PAGE_END);
@@ -78,14 +92,27 @@ public class ImageDisplay extends JFrame
         else
             AddTextArea(remarks, "N/A");
         remarks.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+
+        this.setResizable(false);
+
         pack();
 
         // make window visible, and exit app when all windows closed
         setVisible( true );
         setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
     }
-    
+
+    /**
+     * <p>
+     * Function to create an array which holds bone properties represented as strings. If a bone doesn't have a
+     * particular property, the string "N/A" is stored.
+     *
+     * @param bone      A Bone object containing bone properties
+     *
+     * @return properties       Array containing the bone properties (id, year, objectNum, completeness, elevation) in
+     * order
+     *
+     */
     public String[] CreatePropertiesArray(Bone bone)
     {
         String[] properties = {"N/A", "N/A", "N/A", "N/A", "N/A", "N/A"};
@@ -117,14 +144,24 @@ public class ImageDisplay extends JFrame
 
         return properties;
     }
-    
+
+    /**
+     * <p>
+     * Function that creates a JPanel to hold a label name and property for a bone property. Adds this panel to the
+     * container that was passed in.
+     *
+     * @param container     JPanel to add the created panel in
+     * @param label     Name of the property being displayed
+     * @param property      Value of the property (either property from bone object or "N/A")
+     *
+     */
     public void AddComponent (JPanel container, String label, String property)
     {
         // Create panel for bone field
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         
-        // Add label name and description to the field
+        // Add label name and description to the panel
         JLabel labelname = new JLabel(label + ": ");
         panel.add(labelname);
         AddTextArea(panel, property);
@@ -133,22 +170,37 @@ public class ImageDisplay extends JFrame
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         container.add(panel);
     }
-    
+
+    /**
+     * <p>
+     * Creates a JTextArea to store the text passed in. The text area is then added to the container that is passed in.
+     *
+     * @param container      JPanel to add the created textarea in
+     * @param text      Text that gets placed in the JTextArea
+     *
+     */
     public void AddTextArea (JPanel container, String text)
     {
-        /*
-        Creates a text area and sets properties of fields to display as
-        required.
-        */
+        // Creates a text area and sets properties to display as required. Adds the textarea to the container passed in
         JTextArea textarea = new JTextArea();
+
         textarea.setText(text);
         textarea.setLineWrap(true);
         textarea.setWrapStyleWord(true);
         textarea.setEditable(false);
         textarea.setOpaque(false);
+
         container.add(textarea);
     }
-    
+
+    /**
+     * <p>
+     * Checks if the file boneID.jpg exists in the bonexml directory, and calls ImageDisplay with default image if it
+     * doesn't.
+     *
+     * @param bone      A Bone object containing bone properties
+     *
+     */
     public static void DisplayBone(Bone bone)
     {
         // display bone image. 
@@ -165,11 +217,11 @@ public class ImageDisplay extends JFrame
         });
     }
 
-     // main() function for testing
-     public static void main(String[] args)
-     {
-         // Creates bone list and displays first bone
-         ArrayList<Bone> bones = BonePit.readBones();
-		 DisplayBone(bones.get(4));
-     }
+//     // main() function for testing
+//     public static void main(String[] args)
+//     {
+//         // Creates bone list and displays first bone
+//         ArrayList<Bone> bones = BonePit.readBones();
+//		 DisplayBone(bones.get(4));
+//     }
 }
