@@ -42,9 +42,8 @@ public class Kiosk extends JFrame{
 
     /**
     * <p>
-    *
-    *
-    *
+    * Constructor for the main window of the project. Defines all initial 
+    * layouts and has Key and Mouse Listeners for various events on the window
     */
 	public Kiosk(){
 		super("Welcome to Mammoth Site");
@@ -59,31 +58,34 @@ public class Kiosk extends JFrame{
 		right.setMaximumSize(new Dimension(0,0));
 		bottom.setMaximumSize(new Dimension(0,0));
 
+        //key listeners for escape to close, arrows to adjust view on the
+        //Bone Yard, and +/- keys to zoom in and out of the Bone Yard
 		this.addKeyListener( new KeyAdapter(){
 			@Override public void keyPressed(KeyEvent e) { 
+			    //kill the program on <esc> at main window level
 			    if(e.getKeyCode() == KeyEvent.VK_ESCAPE) System.exit(0); 
 			    else{
 			        int incValue = 10;
 			        switch( e.getKeyCode() ) { 
-                        case (KeyEvent.VK_UP):
+                        case (KeyEvent.VK_UP): // scroll up
                              _BoneYard.AdjustScrollWithArrows(0, -incValue);
                              break;
-                        case (KeyEvent.VK_DOWN):
+                        case (KeyEvent.VK_DOWN): // scroll down
                              _BoneYard.AdjustScrollWithArrows(0, incValue);
                              break;
-                        case (KeyEvent.VK_LEFT):
+                        case (KeyEvent.VK_LEFT): // scroll left
                              _BoneYard.AdjustScrollWithArrows(-incValue, 0);
                              break;
-                        case (KeyEvent.VK_RIGHT) :
+                        case (KeyEvent.VK_RIGHT) : //scroll right
                              _BoneYard.AdjustScrollWithArrows(incValue, 0);
                              break;
                         case (KeyEvent.VK_ADD) :
-                        case (KeyEvent.VK_EQUALS) : //Couldn't figure out the keystroke for (SHIFT + '+')
-                             _BoneYard.setScale(1);
+                        case (KeyEvent.VK_EQUALS) : //essentially equivalent to '+'
+                             _BoneYard.setScale(1); //zoom in
                              break;
                         case (KeyEvent.VK_SUBTRACT) : 
                         case (KeyEvent.VK_MINUS) :
-                             _BoneYard.setScale(-1);
+                             _BoneYard.setScale(-1); //zoom out
                              break;
                         default: break;
                     }
@@ -91,35 +93,43 @@ public class Kiosk extends JFrame{
 			}
 		});
 
+        //if a click is detected on the window, apply focus to the window
 		this.addMouseListener(new MouseAdapter(){
 			@Override public void mouseClicked(MouseEvent e) { if(!hasFocus()) requestFocus(); }
 		});
 
+        //if component comes out of hiding or is dragged around, ensure focus
 		this.addComponentListener(new ComponentAdapter(){
 			@Override public void componentShown(ComponentEvent e) { if(!hasFocus()) requestFocus(); }
 			@Override public void componentMoved(ComponentEvent e) { if(!hasFocus()) requestFocus(); }
 		});
-
-		content.setLayout( layout );
-		content.add(right, BorderLayout.EAST);
-		content.add(bottom, BorderLayout.SOUTH);
-		content.add(, BorderLayout.NORTH);
-		content.add(CreateFilterMenu(), BorderLayout.WEST);
-		content.add(CreateMainKioskBoneYardPanel(), BorderLayout.CENTER);
+        
+        
+		content.setLayout( layout ); // set the layout
+		content.add(top, BorderLayout.NORTH); //empty panel top
+		content.add(right, BorderLayout.EAST); // empty panel right
+		content.add(bottom, BorderLayout.SOUTH); // empty panel bottom
+		content.add(CreateFilterMenu(), BorderLayout.WEST); //filters left
+		content.add(CreateMainKioskBoneYardPanel(), BorderLayout.CENTER); //BoneYard Center
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setContentPane(content);
-		this.setResizable(false);
+		this.setResizable(false);     //don't resize
 		this.setFocusable(true);
 		this.setSize(1600, 900);      //set Width, Height
 		this.setVisible(true);
 	}
 
-
-
 	/**
-	 * @param args the command line arguments
-	 */
+	* <p>
+	* Starting point of the program. First ensures the availability of the 
+	* bonexml folder. If not available, a JFileChooser is presented to the
+	* user so that they can browse to where the folder exists.
+	* <ul> <li> Credit to Elliot Rarden </ul><br>
+	* The GUI is then created and ran on a new thread
+	*
+	* @param args      The command line arguments
+	*/
 	public static void main(String[] args){
 		File f = new File("bonexml/bones.xml");
 		if(!f.exists()) {
@@ -154,10 +164,19 @@ public class Kiosk extends JFrame{
 
 // Private Class Methods
 
+    /**
+    * <p> 
+    * Method that, on a background thread, creates the Kiosk window
+    */
 	private static void CreateAndShowGUI(){
 	   Kiosk kiosk = new Kiosk();
 	}
 
+    /**
+    * <p>
+    * Create the left panel that has the bone filtering options
+    * <ul> <li> Credit to Elliot Rarden </ul>
+    */
 	private JPanel CreateFilterMenu(){
 		JPanel filterMenu = new JPanel();
 
@@ -243,12 +262,20 @@ public class Kiosk extends JFrame{
 		return filterMenu;
 	}
 
+    /**
+    * <p>
+    * Set the layout of the portion of the Kiosk window that isn't the 
+    * filter panel. This will contain the JScrollPane that _BoneYard exists in
+    * and a JToolBar along the bottom.
+    *
+    * @returns  A formatted JPanel containing the _BoneYard and JToolBar
+    */
 	private JPanel CreateMainKioskBoneYardPanel(){
 		JPanel top = new JPanel();
 		JPanel left = new JPanel();
 		JPanel right = new JPanel();
-		JPanel BoneYard = new JPanel();
 		_BoneYard = new GraphicBoneYard();
+		JPanel graphicPanel = new JPanel();
 		_ScrollYard = new JScrollPane(_BoneYard);
 		BorderLayout boneyardLayout = new BorderLayout();
 
@@ -256,48 +283,65 @@ public class Kiosk extends JFrame{
 		_ScrollYard.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		_ScrollYard.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		top.setMaximumSize(new Dimension(0,0));
-		left.setMaximumSize(new Dimension(0,0));
-		right.setMaximumSize(new Dimension(0,0));
+		top.setMaximumSize(new Dimension(0,0)); //flat
+		left.setMaximumSize(new Dimension(0,0)); //flat
+		right.setMaximumSize(new Dimension(0,0)); //flat
 
-		BoneYard.setLayout(boneyardLayout);
-		BoneYard.add(top, BorderLayout.NORTH);
-		BoneYard.add(left, BorderLayout.WEST);
-		BoneYard.add(right, BorderLayout.EAST);
-		BoneYard.add(_ScrollYard, BorderLayout.CENTER);
-		BoneYard.add(CreateBottomOfScreenControls(), BorderLayout.SOUTH);
+		graphicPanel.setLayout(boneyardLayout);
+		graphicPanel.add(top, BorderLayout.NORTH); //flat
+		graphicPanel.add(left, BorderLayout.WEST); //flat
+		graphicPanel.add(right, BorderLayout.EAST); //flat
+		//ScrollPane with bones
+		graphicPanel.add(_ScrollYard, BorderLayout.CENTER);
+		//toolbar
+		graphicPanel.add(CreateBottomOfScreenControls(), BorderLayout.SOUTH);
 
-		return BoneYard;
+		return graphicPanel;
 	}
 
+    /**
+    * <p>
+    * Delegates filling the components of the JToolBar to other methods
+    * 
+    * @returns A Formatted JPanel containing the filled JToolBar
+    */
 	private JPanel CreateBottomOfScreenControls(){
-		JPanel kioskControls = new JPanel();
 		JToolBar toolBar = new JToolBar();
+		JPanel kioskControls = new JPanel();
+		//1 row, as many columns as necessary
 		kioskControls.setLayout(new GridLayout(1, 0));
         
+        //fill toolbar with components
 		SetSliderControl(toolBar);
 		SetZoomControls(toolBar);
 		SetResetControl(toolBar);
 		SetHelpControl(toolBar);
 
-        toolBar.setFloatable(false);
+        toolBar.setFloatable(false); //lock the toolbar in place
 		kioskControls.add(toolBar);
 		kioskControls.add(new JLabel("    "));
 
 		return kioskControls;
 	}
 
+    /**
+    * <p>
+    * Creates the JSlider control to add to the JToolBar
+    *
+    * @param toolBar        The JToolBar to place this control on
+    */
 	private void SetSliderControl(JToolBar toolBar){
 		JPanel sliderPanel = new JPanel();
 		_Slider = new JSlider();
 
+        //event to track changes to the sliders value
 		_Slider.addChangeListener((ChangeEvent e) ->{
 			//From: http://docs.oracle.com/javase/tutorial/uiswing/events/changelistener.html
 			JSlider source = (JSlider)e.getSource();
 			if(!source.getValueIsAdjusting()){
 				_SliderValue = source.getValue();
-				source.transferFocusBackward(); //set focus back to JFrame
 				_BoneYard.setSliderValue(_SliderValue);
+				source.transferFocusBackward(); //set focus back to JFrame
 			}
 		});
 
@@ -320,42 +364,62 @@ public class Kiosk extends JFrame{
 		toolBar.add(sliderPanel);
 	}
 
+    /**
+    * <p>
+    * Adds the +, - buttons to the toolBar for zooming in and out
+    *
+    * @param toolBar        The JToolBar to place this control on
+    */
 	private void SetZoomControls(JToolBar toolBar){
 		JButton zoomOut = new JButton ("-");
 		JButton zoomIn = new JButton("+");
 		JPanel zoomPanel = new JPanel();
 
+        //a listener to determine who clicked it and how to zoom
 		ActionListener zoomListener = new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				if(e.getSource() == zoomIn) setZoomFactor(1);
-				else setZoomFactor(-1);
+				if(e.getSource() == zoomIn) setZoomFactor(1); //zoom in
+				else setZoomFactor(-1); //zoom out
+				//set focus back to main window
 				((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
 			}
 		};
+		
+		//set action Listener on both buttons
 		zoomIn.addActionListener(zoomListener);
 		zoomOut.addActionListener(zoomListener);
 
+        //try to set sizes
+        zoomPanel.setPreferredSize(new Dimension(30, 90));
 		zoomOut.setPreferredSize(new Dimension(50, 30));
 		zoomIn.setPreferredSize(new Dimension(50, 30));
+		
+		//add buttons along with descriptive label
 		JLabel zoomLabel = new JLabel("Zoom: ");
 		zoomLabel.setAlignmentX(JLabel.CENTER);
 		zoomPanel.add(zoomLabel);
 		zoomPanel.add(zoomIn);
 		zoomPanel.add(zoomOut);
 
-        zoomPanel.setPreferredSize(new Dimension(30, 90));
-        zoomPanel.setAlignmentX(JToolBar.RIGHT);
 		toolBar.add(zoomPanel);
 	}
 	
+	/**
+	* <p>
+	* Adds the reset button to the toolBar
+	*
+	* @param toolBar        The JToolBar to place this control on
+	*/
 	private void SetResetControl(JToolBar toolBar){
-	    JButton reset = new JButton("Reset");
 	    JPanel resetPanel = new JPanel();
+	    JButton reset = new JButton("Reset");
 	    
+	    //add action listener to button to call a reset method
 	    reset.addActionListener((ActionEvent e) ->{
-	            _BoneYard.Reset();
-	            _Slider.setValue(5);
+	            _BoneYard.Reset(); //tell _BoneYard to reset
+	            _Slider.setValue(5); //reset to slider to starting value
+	            //set focus back to main window
 	            ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
 	    });
 	    
@@ -363,12 +427,20 @@ public class Kiosk extends JFrame{
 	    toolBar.add(resetPanel);
 	}
 	
+	/**
+	* <p>
+	* Adds the about button to the toolBar
+	*
+	* @param toolBar        The JToolBar to place this control on
+	*/
 	private void SetHelpControl(JToolBar toolBar){
 	    JButton about = new JButton("About");
 	    JPanel aboutPanel = new JPanel();
 	    
+	    //add action listener to button to call a method to display About
 	    about.addActionListener((ActionEvent e) -> {
 	        DisplayAbout();
+	        //set focus back to main window
 	        ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
 	    });
 	    
@@ -376,12 +448,22 @@ public class Kiosk extends JFrame{
 	    toolBar.add(aboutPanel);
 	}
 	
+	/**
+	* <p>
+	* Displays a pop-up window with information about this Kiosk program
+	*/
 	private void DisplayAbout(){
 	    System.out.println("About");
 	}
 
-	private void setZoomFactor(int newValue){
-	    _BoneYard.setScale(newValue);
+    /**
+    * <p>
+    * Passes the request to zoom in/out from zoom controls to _BoneYard
+    *
+    * @param alterValue     The value to change the scaling rate by
+    */
+	private void setZoomFactor(int alterValue){
+	    _BoneYard.setScale(alterValue);
 	}
 
 // End Private Class Methods
