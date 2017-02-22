@@ -319,7 +319,8 @@ public class Kiosk extends JFrame{
 
         toolBar.setFloatable(false); //lock the toolbar in place
 		kioskControls.add(toolBar);
-		kioskControls.add(new JLabel("    "));
+		kioskControls.add(new JLabel());
+	    kioskControls.add(makeColorLegend());
 
 		return kioskControls;
 	}
@@ -404,6 +405,68 @@ public class Kiosk extends JFrame{
 
 		toolBar.add(zoomPanel);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private JPanel makeColorLegend()
+	{
+	    JPanel emptyPanel = new JPanel();
+	    JPanel legendPanel = new JPanel();
+	    JLabel red = new JLabel("red");
+	    JLabel green = new JLabel("green");
+	    JLabel orange = new JLabel("orange");
+	    JPanel legendContents = new JPanel();
+	    JLabel legendTitle = new JLabel("Colors By Completeness: ");
+	    
+	    legendTitle.setAlignmentX(JLabel.CENTER);
+	    legendPanel.setLayout(new BorderLayout());
+	    emptyPanel.setMaximumSize(new Dimension(0,0));
+	    legendContents.setLayout(new GridLayout(0, 2));
+	    
+	    red.setForeground(Color.RED);
+	    green.setForeground(Color.GREEN);
+	    orange.setForeground(Color.ORANGE);
+
+	    legendContents.add(new JLabel("CO : "));
+	    legendContents.add(green);	    
+	    legendContents.add(new JLabel("PC : "));
+	    legendContents.add(orange);	    
+	    legendContents.add(new JLabel("PE : "));
+	    legendContents.add(red);
+	    legendContents.add(new JLabel("other : "));
+	    legendContents.add(new JLabel("black"));
+	    
+	    legendPanel.add(emptyPanel, BorderLayout.WEST);
+	    legendPanel.add(emptyPanel, BorderLayout.EAST);
+	    legendPanel.add(emptyPanel, BorderLayout.SOUTH);
+	    legendPanel.add(legendTitle, BorderLayout.NORTH);
+	    legendPanel.add(legendContents, BorderLayout.CENTER);	    
+	    
+	    return legendPanel;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	* <p>
