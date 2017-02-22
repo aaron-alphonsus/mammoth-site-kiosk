@@ -313,7 +313,6 @@ public class Kiosk extends JFrame
 		_Slider.setSnapToTicks(true);
 
         JLabel sliderLabel = new JLabel("Elevation: ");
-		//sliderPanel.setLayout(new GridLayout(2, 1));
 		sliderPanel.setPreferredSize(new Dimension(150, 75));
 		sliderLabel.setAlignmentX(JLabel.CENTER);
 		sliderPanel.add(sliderLabel);

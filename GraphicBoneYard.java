@@ -10,7 +10,7 @@ import java.util.*;
 
 /** GraphicBoneYard Class
  * <p>
- * Class that the polylines from bonexml are drawn to. This class inherits 
+ * The JPanel that the polylines from bonexml are drawn to. This class inherits
  * from JPanel, and handles all of the Drawing, Resizing, and Movements
  * performed on it.
  *
@@ -53,10 +53,10 @@ public class GraphicBoneYard extends JPanel
 
 // Public Class Methods
 
-    /** GraphicBoneYard Constructor
-    *
-    * The constructor sets default values, adds Mouse Event Listeners, and <br>
-    * makes the call to the BonePit class to parse the bonexml folder for <br>
+    /**
+    * <p>
+    * The constructor sets default values, adds Mouse Event Listeners, and 
+    * makes the call to the BonePit class to parse the bonexml folder for 
     * all bonexml data
     */
 	public GraphicBoneYard() {
@@ -110,9 +110,9 @@ public class GraphicBoneYard extends JPanel
 		});
 	}
 
-    /** getPreferredSize
+    /**
     * <p>
-    * Overloaded version of the JPanel getPreferredSize.
+    * Overriden version of the JPanel getPreferredSize.
     *
     * @return _CurrentDimension, a private variable of type Dimension that
     *         tracks the frame size with a scaling factor applied
@@ -121,9 +121,9 @@ public class GraphicBoneYard extends JPanel
 		return _CurrentDimension;
 	}
 
-    /** paintComponent
+    /**
     * <p>
-    * Overloaded paintComponent method, performs the draw for all the 
+    * Overriden paintComponent method, performs the draw for all the 
     * polylines that represent the bones at Mammoth Site.
     * 
     */
@@ -143,7 +143,7 @@ public class GraphicBoneYard extends JPanel
         revalidate();
     }
 
-	/** setScale
+	/**
 	* <p>
 	* A gateway method for resizing this JPanel. The method guarantees the
 	* validity of the new scaling value before calling the method that will
@@ -159,7 +159,7 @@ public class GraphicBoneYard extends JPanel
 	    }
 	}
 
-    /** setSliderValue
+    /**
     * <p>
     * A method that allows external adjustment of the JSlider in the toolbar.
     *
@@ -170,11 +170,9 @@ public class GraphicBoneYard extends JPanel
 		repaint();
 	}
 	
-	/** Reset
-	*<p>
-	*
-	*
-	*
+	/**
+	* <p>
+	* A method to restore the view to it's original state.
 	*/
 	public void Reset()
 	{
@@ -187,47 +185,105 @@ public class GraphicBoneYard extends JPanel
 		repaint();
 	}
 	
+	/**
+	* <p>
+	* A method to take integer values and shift the current view
+	* in the specified direction by that value.
+	*
+	* @param x      The value to move the view in the x-direction
+	* @param y      the value to move the view in the y-direction
+	*/
 	public void AdjustScrollWithArrows(int x, int y)
 	{
 	    JViewport port = (JViewport)this.getParent();
 		Rectangle visible = port.getViewRect();
 
-        visible.x += x * (_Scale);
+        visible.x += x * (_Scale); //also adjust by current scale factor
         visible.y += y * (_Scale);
 		scrollRectToVisible(visible);
 	}
 
 	// Setters for filters
+	
+	/**
+	* <p>
+	* A setter property for the Draw Male filter option.
+	*
+	* @param _drawMale      boolean to determine whether or not to draw
+	*                       Male bones
+	*/
 	public void setDrawMale(boolean _drawMale) {
 	    this._drawMale = _drawMale;
 	    repaint();
 	}
 
+	/**
+	* <p>
+	* A setter property for the Draw Femal filter option.
+	*
+	* @param _drawFemale      boolean to determine whether or not to draw
+	*                         Female bones
+	*/
 	public void setDrawFemale(boolean _drawFemale) {
 	    this._drawFemale = _drawFemale;
 	    repaint();
 	}
 
+	/**
+	* <p>
+	* A setter property for the Draw Undesignated filter option.
+	*
+	* @param _drawUndesignated      boolean to determine whether or not to
+	*                               draw Undesignated bones
+	*/
 	public void setDrawUndesignated(boolean _drawUndesignated) {
 	    this._drawUndesignated = _drawUndesignated;
 	    repaint();
 	}
 
+	/**
+	* <p>
+	* A setter property for the Draw Columbi filter option.
+	*
+	* @param _drawColumbi      boolean to determine whether or not to draw 
+	*                          Columbi bones
+	*/
 	public void setDrawColumbi(boolean _drawColumbi) {
 	    this._drawColumbi = _drawColumbi;
 	    repaint();
 	}
 
+	/**
+	* <p>
+	* A setter property for the Draw Primigenius filter option.
+	*
+	* @param _drawPrimigenius      boolean to determine whether or not 
+	*                              to draw Primigenius bones
+	*/
 	public void setDrawPrimigenius(boolean _drawPrimigenius) {
 	    this._drawPrimigenius = _drawPrimigenius;
 	    repaint();
 	}
 
+	/**
+	* <p>
+	* A setter property for the Draw Unidentified Mammoth filter option.
+	*
+	* @param _drawUnidentifiedMammoth      boolean to determine whether or 
+	*                                      not to draw Unidentified Mammoth bones
+	*/
 	public void setDrawUnidentifiedMammoth(boolean _drawUnidentifiedMammoth) {
 	    this._drawUnidentifiedMammoth = _drawUnidentifiedMammoth;
 	    repaint();
 	}
 
+	/**
+	* <p>
+	* A setter property for the Draw Unidentified filter option.
+	*
+	* @param _drawUnidentified      boolean to determine whether or not to 
+	*                               draw Unidentified bones
+	*/
 	public void setDrawUnidentified(boolean _drawUnidentified) {
 	    this._drawUnidentified = _drawUnidentified;
 	    repaint();
@@ -239,6 +295,14 @@ public class GraphicBoneYard extends JPanel
 
 // Priavte Class Methods
 
+    /**
+    * <p>
+    * A helper method for paintComponent. Given the Graphics2D Object from 
+    * paintComponent, this method draws the walkway and all bones that meet
+    * the current filtering criteria with the current scaling factor.
+    *
+    * @param graph      The Graphics2D Object from paintComponent
+    */
 	private void Draw(Graphics2D graph) {
 		double topMargin = 5;
 		double botMargin = 5;
@@ -319,6 +383,13 @@ public class GraphicBoneYard extends JPanel
 		}
 	}
 
+    /**
+    * <p>
+    * Adjusts the current scaling factor applied to the JPanel, and maintains
+    * the visible center when applying the new scaling factor.
+    *
+    * @parm resize      The value to adjust the current scaling factor by
+    */
 	private void UpdatePreferredSize(int resize) {
 		_CurrentDimension.setSize((int)(_OriginalDimension.getWidth() * (_Scale + resize)), (int)(_OriginalDimension.getHeight() * (_Scale + resize)));
 		JViewport port = (JViewport)this.getParent();
@@ -335,16 +406,13 @@ public class GraphicBoneYard extends JPanel
 		repaint();
 	}
 
-	private Point getViewPortCenter() {
-		JViewport port = (JViewport)this.getParent();
-		Point center = port.getViewPosition();
-
-		center.x += port.getWidth()/2;
-		center.y += port.getHeight()/2;
-
-		return center;
-	}
-	
+    /**
+    * <p>
+    * Given an input point, the point will become the new view center for
+    * applying an increased scaling factor. 
+    *
+    * @param p      The point as the new view center
+    */
 	private void ZoomToPoint( Point p )
 	{
 	    JViewport port = (JViewport)this.getParent();
@@ -354,6 +422,15 @@ public class GraphicBoneYard extends JPanel
         UpdatePreferredSize(1);
 	}
     
+    /**
+    * <p>
+    * Given a point on the screen, the point is compared to every bone drawing
+    * to determine if the point is within that drawings bounding perimeter.
+    * Of these bones in range, the one whose center point is closest to the
+    * given point is displayed in a JDialog.
+    *
+    * @param p      The point from which to compare proximity
+    */
     private void FindClosestBone(Point2D.Double p)
     {
     	boolean closer = false;
@@ -391,6 +468,15 @@ public class GraphicBoneYard extends JPanel
             ImageDisplay.DisplayBone(closestBone);	
     }
     
+    /**
+    * <p>
+    * The standard formula to compute distance between two 2-dimensional points
+    *
+    * @param a      The point measuring from
+    * @param b      The point measured to
+    *
+    * @return       The computed distance between a and b.
+    */
     private double DistanceFormula(Point2D.Double a, Point2D.Double b)
     {
     	double distance = (a.getX() - b.getX()) * (a.getX() - b.getX());
