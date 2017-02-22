@@ -13,7 +13,7 @@ import java.io.*;
  * The beginning point of the project. This class inherits from JFrame, and is
  * home to all of the visual components, except for Bone Detail Pop-ups.
  *
- * @author Brady Shimp
+ * @author Brady Shimp, Elliott Rarden
  * @version 1
  */
 public class Kiosk extends JFrame{
@@ -309,7 +309,7 @@ public class Kiosk extends JFrame{
 		JToolBar toolBar = new JToolBar();
 		JPanel kioskControls = new JPanel();
 		//1 row, as many columns as necessary
-		kioskControls.setLayout(new GridLayout(1, 0));
+		kioskControls.setLayout(new FlowLayout());
         
         //fill toolbar with components
 		SetSliderControl(toolBar);
@@ -356,8 +356,9 @@ public class Kiosk extends JFrame{
 		_Slider.setPaintLabels(true);
 		_Slider.setSnapToTicks(true);
 
-        JLabel sliderLabel = new JLabel("Elevation: ");
-		sliderPanel.setPreferredSize(new Dimension(150, 75));
+        JLabel sliderLabel = new JLabel("Elevation:");
+        // sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.Y_AXIS));
+		sliderPanel.setPreferredSize(new Dimension(250, 75));
 		sliderLabel.setAlignmentX(JLabel.CENTER);
 		sliderPanel.add(sliderLabel);
 		sliderPanel.add(_Slider);
@@ -392,9 +393,9 @@ public class Kiosk extends JFrame{
 		zoomOut.addActionListener(zoomListener);
 
         //try to set sizes
-        zoomPanel.setPreferredSize(new Dimension(30, 90));
-		zoomOut.setPreferredSize(new Dimension(50, 30));
-		zoomIn.setPreferredSize(new Dimension(50, 30));
+        zoomPanel.setPreferredSize(new Dimension(100, 90));
+		zoomOut.setPreferredSize(new Dimension(70, 30));
+		zoomIn.setPreferredSize(new Dimension(70, 30));
 		
 		//add buttons along with descriptive label
 		JLabel zoomLabel = new JLabel("Zoom: ");

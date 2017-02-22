@@ -23,6 +23,8 @@ import javax.swing.*;
  * It class will parse the XML bones.xml file and create a list of BoneObjects,
  * as well as hold any metadata about the bonepit at the mammoth site, such as
  * the maximum and minimum elevation of a bone.
+ *
+ * @author Elliott Rarden
  */
 public class BonePit {
 	private static ArrayList<Bone> bones = null;

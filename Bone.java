@@ -21,6 +21,8 @@ import javax.swing.*;
 
 /**
  * The bone class holds all metadata and drawing information for a bone object
+ *
+ * @author Elliott Rarden
  */
 public class Bone
 {

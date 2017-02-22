@@ -22,6 +22,8 @@ import javax.swing.*;
 /**
  * The walkway is a singleton class which holds drawing information about the
  * walkway at the Mammoth Site.
+ *
+ * @author Elliott Rarden
  */
 public class Walkway
 {
