@@ -114,7 +114,7 @@ public class Kiosk extends JFrame{
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setContentPane(content);
-		this.setResizable(false);     //don't resize
+		//this.setResizable(false);     //don't resize
 		this.setFocusable(true);
 		this.setSize(1600, 900);      //set Width, Height
 		this.setVisible(true);
@@ -309,7 +309,14 @@ public class Kiosk extends JFrame{
 		JToolBar toolBar = new JToolBar();
 		JPanel kioskControls = new JPanel();
 		//1 row, as many columns as necessary
-		kioskControls.setLayout(new GridLayout(1, 0));
+		//kioskControls.setLayout(new GridLayout(1, 0));
+
+        kioskControls.setLayout(new BorderLayout());
+        JPanel empty = new JPanel();
+        empty.setMaximumSize(new Dimension(0,0));
+        kioskControls.add(empty, BorderLayout.WEST);
+        kioskControls.add(empty, BorderLayout.NORTH);
+        kioskControls.add(empty, BorderLayout.SOUTH);
         
         //fill toolbar with components
 		SetSliderControl(toolBar);
@@ -318,9 +325,9 @@ public class Kiosk extends JFrame{
 		SetHelpControl(toolBar);
 
         toolBar.setFloatable(false); //lock the toolbar in place
-		kioskControls.add(toolBar);
-		kioskControls.add(new JLabel());
-	    kioskControls.add(makeColorLegend());
+		kioskControls.add(toolBar, BorderLayout.CENTER);
+		//kioskControls.add(new JLabel());
+	    kioskControls.add(makeColorLegend(), BorderLayout.EAST);
 
 		return kioskControls;
 	}
@@ -356,7 +363,7 @@ public class Kiosk extends JFrame{
 		_Slider.setPaintLabels(true);
 		_Slider.setSnapToTicks(true);
 
-        JLabel sliderLabel = new JLabel("Elevation: ");
+        	JLabel sliderLabel = new JLabel("Elevation: ");
 		sliderPanel.setPreferredSize(new Dimension(150, 75));
 		sliderLabel.setAlignmentX(JLabel.CENTER);
 		sliderPanel.add(sliderLabel);
@@ -391,8 +398,8 @@ public class Kiosk extends JFrame{
 		zoomIn.addActionListener(zoomListener);
 		zoomOut.addActionListener(zoomListener);
 
-        //try to set sizes
-        zoomPanel.setPreferredSize(new Dimension(30, 90));
+        	//try to set sizes
+        	zoomPanel.setPreferredSize(new Dimension(30, 90));
 		zoomOut.setPreferredSize(new Dimension(50, 30));
 		zoomIn.setPreferredSize(new Dimension(50, 30));
 		
