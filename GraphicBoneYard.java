@@ -8,7 +8,7 @@ import java.util.*;
 
 //End Imports
 
-/** GraphicBoneYard Class
+/**
  * <p>
  * The JPanel that the polylines from bonexml are drawn to. This class inherits
  * from JPanel, and handles all of the Drawing, Resizing, and Movements

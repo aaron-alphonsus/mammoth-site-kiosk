@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+//Imports
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -11,44 +6,63 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.*;
 
+//End Imports
 
 /**
+ * <p>
+ * The beginning point of the project. This class inherits from JFrame, and is
+ * home to all of the visual components, except for Bone Detail Pop-ups.
  *
  * @author Brady Shimp
+ * @version 1
  */
-public class Kiosk extends JFrame
-{
-	//Private Class Members
+public class Kiosk extends JFrame{
+// Private Class Members
 
 	private GraphicBoneYard _BoneYard = null;
 	private JScrollPane _ScrollYard = null;
 	private JSlider _Slider = null;
 	private int _SliderValue = 0;
+	
+// End Private Class Members
 
-	// Public Static variables
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+// Public Class Members
+
 	public static String path = "bonexml/";
 
-	// Class Constructor
+// End Public Class Members
 
-	public Kiosk()
-	{
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+// Public Class Methods
+
+    /**
+    * <p>
+    *
+    *
+    *
+    */
+	public Kiosk(){
 		super("Welcome to Mammoth Site");
-		Container content = getContentPane();
-		BorderLayout layout = new BorderLayout();
+		JPanel top = new JPanel();
 		JPanel right = new JPanel();
 		JPanel bottom = new JPanel();
-		JMenuBar menuBar = new JMenuBar();
+		Container content = getContentPane();
+		BorderLayout layout = new BorderLayout();
 
+        //Set these to a flat size so the left and center get all the room
+        top.setMaximumSize(new Dimension(0, 0));
 		right.setMaximumSize(new Dimension(0,0));
 		bottom.setMaximumSize(new Dimension(0,0));
 
-		this.addKeyListener( new KeyAdapter()
-		{
-			@Override public void keyPressed(KeyEvent e) 
-			{ 
+		this.addKeyListener( new KeyAdapter(){
+			@Override public void keyPressed(KeyEvent e) { 
 			    if(e.getKeyCode() == KeyEvent.VK_ESCAPE) System.exit(0); 
-			    else
-			    {
+			    else{
 			        int incValue = 10;
 			        switch( e.getKeyCode() ) { 
                         case (KeyEvent.VK_UP):
@@ -77,23 +91,19 @@ public class Kiosk extends JFrame
 			}
 		});
 
-		this.addMouseListener(new MouseAdapter()
-		{
+		this.addMouseListener(new MouseAdapter(){
 			@Override public void mouseClicked(MouseEvent e) { if(!hasFocus()) requestFocus(); }
 		});
 
-		this.addComponentListener(new ComponentAdapter()
-		{
+		this.addComponentListener(new ComponentAdapter(){
 			@Override public void componentShown(ComponentEvent e) { if(!hasFocus()) requestFocus(); }
 			@Override public void componentMoved(ComponentEvent e) { if(!hasFocus()) requestFocus(); }
 		});
 
-		menuBar.add(new JMenu("File"));
-
 		content.setLayout( layout );
 		content.add(right, BorderLayout.EAST);
 		content.add(bottom, BorderLayout.SOUTH);
-		content.add(menuBar, BorderLayout.NORTH);
+		content.add(, BorderLayout.NORTH);
 		content.add(CreateFilterMenu(), BorderLayout.WEST);
 		content.add(CreateMainKioskBoneYardPanel(), BorderLayout.CENTER);
 
@@ -105,20 +115,15 @@ public class Kiosk extends JFrame
 		this.setVisible(true);
 	}
 
-	//End Class Constructor
 
-
-	//Public Class Methods
 
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args){
 		File f = new File("bonexml/bones.xml");
 		if(!f.exists()) {
-			while(true)
-		    {
+			while(true){
 		    	JFileChooser jfc = new JFileChooser();
     		    jfc.setCurrentDirectory(new File(System.getProperty("user.home")));
     		    jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -142,18 +147,18 @@ public class Kiosk extends JFrame
 		SwingUtilities.invokeLater(new Runnable() { public void run() { CreateAndShowGUI(); } });
 	}
 
-	//End Public Class Methods
+// End Public Class Methods
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
-	//Private Class Methods
+// Private Class Methods
 
-	private static void CreateAndShowGUI()
-	{
+	private static void CreateAndShowGUI(){
 	   Kiosk kiosk = new Kiosk();
 	}
 
-	private JPanel CreateFilterMenu()
-	{
+	private JPanel CreateFilterMenu(){
 		JPanel filterMenu = new JPanel();
 
 		// Add a border to our thing so it looks "nice"
@@ -163,7 +168,6 @@ public class Kiosk extends JFrame
 		filterMenu.setAlignmentX(JScrollPane.LEFT_ALIGNMENT);
 
 		// Add check boxes
-		// I really like anonymous class.  ISorry, not sorry :)
 		JCheckBox cb = new JCheckBox("Show male bones", true);
 		cb.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -239,8 +243,7 @@ public class Kiosk extends JFrame
 		return filterMenu;
 	}
 
-	private JPanel CreateMainKioskBoneYardPanel()
-	{
+	private JPanel CreateMainKioskBoneYardPanel(){
 		JPanel top = new JPanel();
 		JPanel left = new JPanel();
 		JPanel right = new JPanel();
@@ -267,8 +270,7 @@ public class Kiosk extends JFrame
 		return BoneYard;
 	}
 
-	private JPanel CreateBottomOfScreenControls()
-	{
+	private JPanel CreateBottomOfScreenControls(){
 		JPanel kioskControls = new JPanel();
 		JToolBar toolBar = new JToolBar();
 		kioskControls.setLayout(new GridLayout(1, 0));
@@ -285,17 +287,14 @@ public class Kiosk extends JFrame
 		return kioskControls;
 	}
 
-	private void SetSliderControl(JToolBar toolBar)
-	{
+	private void SetSliderControl(JToolBar toolBar){
 		JPanel sliderPanel = new JPanel();
 		_Slider = new JSlider();
 
-		_Slider.addChangeListener((ChangeEvent e) ->
-		{
+		_Slider.addChangeListener((ChangeEvent e) ->{
 			//From: http://docs.oracle.com/javase/tutorial/uiswing/events/changelistener.html
 			JSlider source = (JSlider)e.getSource();
-			if(!source.getValueIsAdjusting())
-			{
+			if(!source.getValueIsAdjusting()){
 				_SliderValue = source.getValue();
 				source.transferFocusBackward(); //set focus back to JFrame
 				_BoneYard.setSliderValue(_SliderValue);
@@ -321,17 +320,14 @@ public class Kiosk extends JFrame
 		toolBar.add(sliderPanel);
 	}
 
-	private void SetZoomControls(JToolBar toolBar)
-	{
+	private void SetZoomControls(JToolBar toolBar){
 		JButton zoomOut = new JButton ("-");
 		JButton zoomIn = new JButton("+");
 		JPanel zoomPanel = new JPanel();
 
-		ActionListener zoomListener = new ActionListener()
-		{
+		ActionListener zoomListener = new ActionListener(){
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e){
 				if(e.getSource() == zoomIn) setZoomFactor(1);
 				else setZoomFactor(-1);
 				((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
@@ -353,8 +349,7 @@ public class Kiosk extends JFrame
 		toolBar.add(zoomPanel);
 	}
 	
-	private void SetResetControl(JToolBar toolBar)
-	{
+	private void SetResetControl(JToolBar toolBar){
 	    JButton reset = new JButton("Reset");
 	    JPanel resetPanel = new JPanel();
 	    
@@ -368,8 +363,7 @@ public class Kiosk extends JFrame
 	    toolBar.add(resetPanel);
 	}
 	
-	private void SetHelpControl(JToolBar toolBar)
-	{
+	private void SetHelpControl(JToolBar toolBar){
 	    JButton about = new JButton("About");
 	    JPanel aboutPanel = new JPanel();
 	    
@@ -382,15 +376,13 @@ public class Kiosk extends JFrame
 	    toolBar.add(aboutPanel);
 	}
 	
-	private void DisplayAbout()
-	{
+	private void DisplayAbout(){
 	    System.out.println("About");
 	}
 
-	private void setZoomFactor(int newValue)
-	{
+	private void setZoomFactor(int newValue){
 	    _BoneYard.setScale(newValue);
 	}
 
-	//End Private Class Methods
+// End Private Class Methods
 }
