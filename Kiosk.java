@@ -517,7 +517,7 @@ public class Kiosk extends JFrame{
 	* Displays a pop-up window with information about this Kiosk program
 	*/
 	private void DisplayAbout(){
-	    System.out.println("About");
+	    JOptionPane.showMessageDialog(null, "Welcome to the Mammoth Site Kiosk.\nCreated by Brady Shimp, Elliott Rarden, and Aaron Alphonsus\n\nThe boxes on the left hand side allow you to enable and disable bones\nThe slider at the bottom allows you to show bones above an elevation\nThe zoom controlls allow you to zoom in and out of the bone yard\nThe reset button takes you back to the default screen");
 	}
 
     /**
