@@ -19,16 +19,26 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import javax.swing.*;
 
+/**
+ * The walkway is a singleton class which holds drawing information about the
+ * walkway at the Mammoth Site.
+ *
+ * @author Elliott Rarden
+ */
 public class Walkway
 {
-	// Metadata
+	// Drawing information
 	public double xMin, xMax, yMin, yMax;
 	public ArrayList<ArrayList<Point2D.Double>> polylines = new ArrayList<ArrayList<Point2D.Double>>();
 
-	// Singleton stuff
+	// Singleton classes keep a private reference to themselves
 	private static Walkway ww;
 
-	// The walkway is a singleton object, so it's constructor is private
+	/**
+	 * The walkway is a singelton object, so it's constructor is private
+	 * 
+	 * @return A walkway object
+	 */
 	private Walkway()
 	{
 		super();
@@ -36,13 +46,20 @@ public class Walkway
 		this.parseXML();
 	}
 	
-	// toString so we can debug :)
+	/**
+	 * @return A string containing debug output about the walkway
+	 */
 	public String toString() {
 		return "Walkway\n    xMin, xMax = (" + xMin + ", " + xMax + ")\n    yMin, yMax = (" + yMin + ", " + yMax + ")\n";
 
 	}
 
-	// This is essentially a copy of the Bone class's parseXML function
+	/**
+	 * This function is essentially a copy of the parseXML() function from the
+	 * bone class
+	 *
+	 * @see  bone.java
+	 */
 	private void parseXML()
 	{
 		// Get our root node
@@ -106,8 +123,11 @@ public class Walkway
 		}
 	}
 
-	// Singleton classes have one public method so that people who need it
-	// can get a reference to the object
+	/**
+	 * This method allows peopel to access the walkway 
+	 * 
+	 * @return A reference to the walkway singleton
+	 */
 	public static Walkway getWalkwayInstance()
 	{
 		// If the does not exist

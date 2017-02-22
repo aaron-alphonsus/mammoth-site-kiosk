@@ -13,7 +13,7 @@ import java.io.*;
  * The beginning point of the project. This class inherits from JFrame, and is
  * home to all of the visual components, except for Bone Detail Pop-ups.
  *
- * @author Brady Shimp
+ * @author Brady Shimp, Elliott Rarden
  * @version 1
  */
 public class Kiosk extends JFrame{
@@ -308,16 +308,8 @@ public class Kiosk extends JFrame{
 	private JPanel CreateBottomOfScreenControls(){
 		JToolBar toolBar = new JToolBar();
 		JPanel kioskControls = new JPanel();
-		//1 row, as many columns as necessary
-		//kioskControls.setLayout(new GridLayout(1, 0));
+		kioskControls.setLayout(new FlowLayout());
 
-        kioskControls.setLayout(new BorderLayout());
-        JPanel empty = new JPanel();
-        empty.setMaximumSize(new Dimension(0,0));
-        kioskControls.add(empty, BorderLayout.WEST);
-        kioskControls.add(empty, BorderLayout.NORTH);
-        kioskControls.add(empty, BorderLayout.SOUTH);
-        
         //fill toolbar with components
 		SetSliderControl(toolBar);
 		SetZoomControls(toolBar);
@@ -325,9 +317,8 @@ public class Kiosk extends JFrame{
 		SetHelpControl(toolBar);
 
         toolBar.setFloatable(false); //lock the toolbar in place
-		kioskControls.add(toolBar, BorderLayout.CENTER);
-		//kioskControls.add(new JLabel());
-	    kioskControls.add(makeColorLegend(), BorderLayout.EAST);
+		kioskControls.add(toolBar);
+	    kioskControls.add(makeColorLegend());
 
 		return kioskControls;
 	}
@@ -363,8 +354,8 @@ public class Kiosk extends JFrame{
 		_Slider.setPaintLabels(true);
 		_Slider.setSnapToTicks(true);
 
-        	JLabel sliderLabel = new JLabel("Elevation: ");
-		sliderPanel.setPreferredSize(new Dimension(150, 75));
+        JLabel sliderLabel = new JLabel("Elevation:");
+		sliderPanel.setPreferredSize(new Dimension(250, 75));
 		sliderLabel.setAlignmentX(JLabel.CENTER);
 		sliderPanel.add(sliderLabel);
 		sliderPanel.add(_Slider);
@@ -398,10 +389,10 @@ public class Kiosk extends JFrame{
 		zoomIn.addActionListener(zoomListener);
 		zoomOut.addActionListener(zoomListener);
 
-        	//try to set sizes
-        	zoomPanel.setPreferredSize(new Dimension(30, 90));
-		zoomOut.setPreferredSize(new Dimension(50, 30));
-		zoomIn.setPreferredSize(new Dimension(50, 30));
+        //try to set sizes
+        zoomPanel.setPreferredSize(new Dimension(100, 90));
+		zoomOut.setPreferredSize(new Dimension(70, 30));
+		zoomIn.setPreferredSize(new Dimension(70, 30));
 		
 		//add buttons along with descriptive label
 		JLabel zoomLabel = new JLabel("Zoom: ");
@@ -413,20 +404,13 @@ public class Kiosk extends JFrame{
 		toolBar.add(zoomPanel);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+    //needs documentation
 	private JPanel makeColorLegend()
 	{
 	    JPanel emptyPanel = new JPanel();
@@ -463,17 +447,6 @@ public class Kiosk extends JFrame{
 	    
 	    return legendPanel;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	/**
 	* <p>
@@ -523,7 +496,7 @@ public class Kiosk extends JFrame{
 	* Displays a pop-up window with information about this Kiosk program
 	*/
 	private void DisplayAbout(){
-	    System.out.println("About");
+	    JOptionPane.showMessageDialog(null, "Welcome to the Mammoth Site Kiosk.\nCreated by Brady Shimp, Elliott Rarden, and Aaron Alphonsus\n\nThe boxes on the left hand side allow you to enable and disable bones\nThe slider at the bottom allows you to show bones above an elevation\nThe zoom controlls allow you to zoom in and out of the bone yard\nThe reset button takes you back to the default screen");
 	}
 
     /**
