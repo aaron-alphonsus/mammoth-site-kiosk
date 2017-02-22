@@ -64,8 +64,7 @@ public class ImageDisplay extends JFrame
         });
         
         // Creates arrays with bone details and labels for bone details.
-        String[] labels = {"Bone Object", "Year", "Taxon", "Object Number",
-            "Completeness", "Elevation"};
+        String[] labels = {"Bone Object", "Year", "Taxon", "Object Number", "Completeness", "Elevation"};
         String[] properties = CreatePropertiesArray(bone);
         
         /*
@@ -92,8 +91,6 @@ public class ImageDisplay extends JFrame
         else
             AddTextArea(remarks, "N/A");
         remarks.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        this.setResizable(false);
 
         pack();
 

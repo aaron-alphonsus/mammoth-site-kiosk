@@ -114,7 +114,7 @@ public class Kiosk extends JFrame{
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setContentPane(content);
-		this.setResizable(false);     //don't resize
+		//this.setResizable(false);     //don't resize
 		this.setFocusable(true);
 		this.setSize(1600, 900);      //set Width, Height
 		this.setVisible(true);
@@ -308,9 +308,8 @@ public class Kiosk extends JFrame{
 	private JPanel CreateBottomOfScreenControls(){
 		JToolBar toolBar = new JToolBar();
 		JPanel kioskControls = new JPanel();
-		//1 row, as many columns as necessary
 		kioskControls.setLayout(new FlowLayout());
-        
+
         //fill toolbar with components
         SetDetailSlidercontrol(toolBar);
 		SetElevationSliderControl(toolBar);
@@ -320,7 +319,6 @@ public class Kiosk extends JFrame{
 
         toolBar.setFloatable(false); //lock the toolbar in place
 		kioskControls.add(toolBar);
-		kioskControls.add(new JLabel());
 	    kioskControls.add(makeColorLegend());
 
 		return kioskControls;
@@ -453,20 +451,13 @@ public class Kiosk extends JFrame{
 		toolBar.add(zoomPanel);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+    //needs documentation
 	private JPanel makeColorLegend()
 	{
 	    JPanel emptyPanel = new JPanel();
@@ -503,7 +494,6 @@ public class Kiosk extends JFrame{
 	    
 	    return legendPanel;
 	}
-		
 	
 	/**
 	* <p>
