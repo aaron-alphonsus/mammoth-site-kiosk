@@ -548,7 +548,28 @@ public class Kiosk extends JFrame{
 	* Displays a pop-up window with information about this Kiosk program
 	*/
 	private void DisplayAbout(){
-	    JOptionPane.showMessageDialog(null, "Welcome to the Mammoth Site Kiosk.\nCreated by Brady Shimp, Elliott Rarden, and Aaron Alphonsus\n\nThe boxes on the left hand side allow you to enable and disable bones\nThe slider at the bottom allows you to show bones above an elevation\nThe zoom controlls allow you to zoom in and out of the bone yard\nThe reset button takes you back to the default screen");
+		JOptionPane.showMessageDialog(null,
+            "Welcome to the Mammoth Site Kiosk." +
+            "\nCreated by Brady Shimp, Elliott Rarden, and Aaron Alphonsus\n\n" +
+            "Filters" +
+            "\n    The boxes on the left hand side allow you to filter bones based on taxononomy and gender." +
+            "\n    The sliders at the bottom allow you to control the level of detail to be displayed, and filter " +
+                "bones based on elevation." +
+            "\nZooming" +
+            "\n    You may zoom in and out by using the on-screen zoom buttons, or the +/- buttons on the keyboard." +
+            "\n    You may also zoom in by double clicking the left mouse button." +
+            "\n    The reset button takes you back to the original zoom level." +
+            "\nPanning" +
+            "\n    You may pan around the bone bed by clicking and dragging on the display or by using the scroll bars." +
+            "\n    You may also pan around the display by using the arrow keys on the keyboard." +
+            "\nDialog Boxes" +
+            "\n    If the bonesxml folder is not found in the current directory, you may select it using the file " +
+                "dialog." +
+            "\n    Click on a bone to view an image of the bone and some information about it." +
+            "\n    You may use the Esc button on the keyboard to close out of dialogs, as well as the main window." ,
+            "About",
+            JOptionPane.INFORMATION_MESSAGE,
+            null);
 	}
 
     /**
