@@ -118,7 +118,7 @@ public class Kiosk extends JFrame{
 		this.setContentPane(content);
 		this.setResizable(false);     //don't resize
 		this.setFocusable(true);
-		this.setSize(1280, 720);      //set Width, Height
+		this.setSize(1366, 725);      //set Width, Height
 		this.setVisible(true);
 	}
 
@@ -311,14 +311,17 @@ public class Kiosk extends JFrame{
 	private JPanel CreateBottomOfScreenControls(){
 		JToolBar toolBar = new JToolBar();
 		JPanel kioskControls = new JPanel();
+        JPanel helpResetButtons = new JPanel();
+        helpResetButtons.setLayout(new GridLayout(2, 1));
 		kioskControls.setLayout(new FlowLayout());
 
         //fill toolbar with components
         SetDetailSlidercontrol(toolBar);
 		SetElevationSliderControl(toolBar);
 		SetZoomControls(toolBar);
-		SetResetControl(toolBar);
-		SetHelpControl(toolBar);
+        helpResetButtons.add(SetResetControl());
+		helpResetButtons.add(SetHelpControl());
+        toolBar.add(helpResetButtons);        
 
         toolBar.setFloatable(false); //lock the toolbar in place
 		kioskControls.add(toolBar);
@@ -361,7 +364,6 @@ public class Kiosk extends JFrame{
 		_ElevationSlider.setPreferredSize(new Dimension(300, 50));
 
         JLabel sliderLabel = new JLabel("Elevation:");
-        // sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.Y_AXIS));
 		sliderPanel.setPreferredSize(new Dimension(350, 75));
 		sliderLabel.setAlignmentX(JLabel.CENTER);
 		sliderPanel.add(sliderLabel);
@@ -404,7 +406,6 @@ public class Kiosk extends JFrame{
 		_DetailSlider.setPreferredSize(new Dimension(300, 50));
 
         JLabel sliderLabel = new JLabel("Level of Detail:");
-        // sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.Y_AXIS));
 		sliderPanel.setPreferredSize(new Dimension(350, 75));
 		sliderLabel.setAlignmentX(JLabel.CENTER);
 		sliderPanel.add(sliderLabel);
@@ -454,13 +455,10 @@ public class Kiosk extends JFrame{
 		toolBar.add(zoomPanel);
 	}
 	
-
-
-
-
-
-
-    //needs documentation
+    /**
+    * <p>
+    * A legend that lists which classifications of bones are what color.
+    */
 	private JPanel makeColorLegend()
 	{
 	    JPanel emptyPanel = new JPanel();
@@ -504,9 +502,8 @@ public class Kiosk extends JFrame{
 	*
 	* @param toolBar        The JToolBar to place this control on
 	*/
-	private void SetResetControl(JToolBar toolBar){
-	    JPanel resetPanel = new JPanel();
-	    JButton reset = new JButton("Reset");
+	private JButton SetResetControl(){
+        JButton reset = new JButton("Reset");
 	    
 	    //add action listener to button to call a reset method
 	    reset.addActionListener((ActionEvent e) ->{
@@ -518,8 +515,7 @@ public class Kiosk extends JFrame{
 	            ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
 	    });
 	    
-	    resetPanel.add(reset);
-	    toolBar.add(resetPanel);
+        return reset;
 	}
 	
 	/**
@@ -528,9 +524,8 @@ public class Kiosk extends JFrame{
 	*
 	* @param toolBar        The JToolBar to place this control on
 	*/
-	private void SetHelpControl(JToolBar toolBar){
+	private JButton SetHelpControl(/*JToolBar toolBar*/){
 	    JButton about = new JButton("About");
-	    JPanel aboutPanel = new JPanel();
 	    
 	    //add action listener to button to call a method to display About
 	    about.addActionListener((ActionEvent e) -> {
@@ -538,10 +533,9 @@ public class Kiosk extends JFrame{
 	        //set focus back to main window
 	        ((JButton)e.getSource()).getTopLevelAncestor().requestFocus();
 	    });
-	    
-	    aboutPanel.add(about);
-	    toolBar.add(aboutPanel);
-	}
+	   
+        return about;	
+    }
 	
 	/**
 	* <p>
